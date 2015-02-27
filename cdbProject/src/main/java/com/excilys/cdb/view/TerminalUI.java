@@ -135,10 +135,10 @@ public class TerminalUI {
 	}
 
 	private void companyList() {
-		ArrayList<Company> companyList = companyServices.getAllCompany();
+		/*ArrayList<Company> companyList = companyServices.getAllCompany();
 		for (Company company : companyList) {
 			System.out.println(company.toString());
-		}
+		}*/
 	}
 
 	private void addComputer() {

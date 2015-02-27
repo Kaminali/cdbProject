@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.*"%>
+<%@ taglib uri="/WEB-INF/page.tld" prefix="page"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html>
@@ -73,20 +76,22 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<%
-						String list = (String) request.getAttribute("resultat");
-						out.println(list);
-					%>
+					<c:forEach var="entry" items="${resultatC}">
+						<tr>
+							<td class="editMode"><input type="checkbox" name="cb" class="cb" value="${entry.getId()}"></td>
+							<td><a href="editComputer.html" onclick="">${entry.getName()}</a></td>
+							<td>${entry.getIntroduced()}</td>
+							<td>${entry.getDiscontinued()}</td>
+							<td>${entry.getCompanyDto().getName()}</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<%
-			String list2 = (String) request.getAttribute("pagination");
-			out.println(list2);
-		%>
+		<page:pagination page="${page}" offset="${offset}" max="${max}" />
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+            PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" 
+            "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+    <tlibversion>1.0</tlibversion>
+    <jspversion>1.2</jspversion>
+    <shortname>utility</shortname>
+    <uri>...</uri>
+    <info>...</info>
+    
+    <!-- page tag -->
+    <tag>
+      <name>pagination</name>
+      <tagclass>com.excilys.cdb.view.tagLib.Pagination</tagclass>
+      <bodycontent>empty</bodycontent>
+		<attribute>
+			<name>page</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>offset</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>max</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+    </tag>
+</taglib>

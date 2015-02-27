@@ -41,28 +41,12 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 		long nb = (request.getParameter("nb") != null) ? Long.valueOf(request.getParameter("nb")) : 10;
 		nb = (request.getParameter("nbB") != null) ? Long.valueOf(request.getParameter("nbB")) : nb;
 		
-		
 		ArrayList<ComputerDTO> computerList = computerServices.getAllComputeur((p-1)*nb, nb);
 
-		StringBuilder rep = new StringBuilder();
-
-		for (ComputerDTO computer : computerList) {
-
-			rep.append("<tr><td class=\"editMode\"><input type=\"checkbox\" name=\"cb\" class=\"cb\" value=\"");
-			rep.append(computer.getId());
-			rep.append("\"></td><td><a href=\"editComputer.html\" onclick=\"\">");
-			rep.append(computer.getName());
-			rep.append("</a></td><td>");
-			rep.append(computer.getIntroduced());
-			rep.append("</td><td>");
-			rep.append(computer.getDiscontinued());
-			rep.append("</td><td>");
-			rep.append((-1 == computer.getCompanyDto().getId()) ? "" : computer.getCompanyDto().getName());
-			rep.append("</td></tr>");
-
-		}
-
-		request.setAttribute("resultat", rep.toString());
+		request.setAttribute("resultatC", computerList);
+		request.setAttribute("page", p);
+		request.setAttribute("offset", nb);
+		request.setAttribute("max", computerServices.getNb());
 		request.setAttribute("pagination", pagination(p, nb, computerServices.getNb()));
 
 		getServletContext().getRequestDispatcher("/views/dashboard.jsp")

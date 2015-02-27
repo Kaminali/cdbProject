@@ -29,17 +29,25 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" name="computerName"
-									id="computerName" placeholder="Computer name">
+									id="computerName" placeholder="Computer name" required>
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
-									name="introduced" placeholder="Introduced date">
+									name="introduced" placeholder="yyyy-mm-dd"
+									pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+									oninvalid="setCustomValidity('format yyyy-mm-dd')"
+									onchange="try{setCustomValidity('')}catch(e){}"
+    								>
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
-									name="discontinued" placeholder="Discontinued date">
+									name="discontinued" placeholder="yyyy-mm-dd"
+									pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+									oninvalid="setCustomValidity('format yyyy-mm-dd')"
+									onchange="try{setCustomValidity('')}catch(e){}"
+									>
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select

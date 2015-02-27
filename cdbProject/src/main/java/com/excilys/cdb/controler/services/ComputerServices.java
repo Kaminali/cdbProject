@@ -6,6 +6,8 @@ package com.excilys.cdb.controler.services;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import com.excilys.cdb.controler.dto.ComputerDTO;
+import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.validate.CheckValues;
 import com.excilys.cdb.model.bean.Company;
 import com.excilys.cdb.model.bean.Computer;
@@ -27,7 +29,7 @@ public class ComputerServices {
 		companyDAO = new CompanyDAO(ConnectionManager.getInstance());
 	}
 
-	public ArrayList<Computer> getAllComputeur(long begin, long nb) {
+	public ArrayList<ComputerDTO> getAllComputeur(long begin, long nb) {
 		ArrayList<Computer> computerList;
 		if (begin == -1 || nb == -1) {
 			computerList = computerDAO.getList();
@@ -35,11 +37,7 @@ public class ComputerServices {
 			computerList = computerDAO.getList(begin, nb);
 		}
 
-		for (Computer computer : computerList) {
-			computer.setCompany(companyDAO.getById(computer.getCompany()
-					.getId()));
-		}
-		return computerList;
+		return MapComputerDTO.ModelToDto(computerList);
 	}
 
 	public Computer getComputeurById(long id) {
@@ -48,60 +46,16 @@ public class ComputerServices {
 		return computer;
 	}
 
-	public Computer formatComputer(String name, String introduced,
-			String discontinued, Long idCompany) throws Exception {
+	public void insertComputer(ComputerDTO computerDto) throws Exception {
 
-		Computer computer = new Computer();
-
-		CheckValues.checkName(name);
-		computer.setName(name);
-
-		Timestamp introducedTS;
-		try {
-			introducedTS = CheckValues.stringToTimestamp(introduced);
-		} catch (Exception e) {
-			introducedTS = null;
-		}
-
-		computer.setIntroduced(introducedTS);
-
-		Timestamp discontinuedTS;
-		try {
-			discontinuedTS = CheckValues.stringToTimestamp(discontinued);
-		} catch (Exception e) {
-			discontinuedTS = null;
-		}
-
-		computer.setDiscontinued(discontinuedTS);
-		Company company = null;
-		try {
-			company = companyDAO.getById(idCompany);
-			CheckValues.checkCompany(company.getId());
-		} catch (Exception e) {
-			company = null;
-		}
-
-		computer.setCompany(company);
-
-		return computer;
-	}
-
-	public void insertComputer(String name, String introduced,
-			String discontinued, Long idCompany) throws Exception {
-
-		Computer computer = formatComputer(name, introduced, discontinued,
-				idCompany);
+		Computer computer = MapComputerDTO.DtoToModel(computerDto);
 		computerDAO.insert(computer);
 
 	}
 
-	public void updateComputer(String name, String introduced,
-			String discontinued, Long idCompany, Long id) throws Exception {
+	public void updateComputer(ComputerDTO computerDto) throws Exception {
 
-		CheckValues.checkComputer(id);
-		Computer computer = formatComputer(name, introduced, discontinued,
-				idCompany);
-		computer.setId(id);
+		Computer computer = MapComputerDTO.DtoToModel(computerDto);
 		computerDAO.update(computer);
 
 	}
@@ -113,6 +67,10 @@ public class ComputerServices {
 		computer.setId(id);
 		computerDAO.delete(computer);
 
+	}
+
+	public int getNb() {
+		return computerDAO.getNb();
 	}
 
 }

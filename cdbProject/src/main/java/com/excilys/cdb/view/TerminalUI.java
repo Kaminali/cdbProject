@@ -6,6 +6,7 @@ package com.excilys.cdb.view;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.services.ComputerServices;
 import com.excilys.cdb.controler.services.CompanyServices;
 import com.excilys.cdb.controler.validate.CheckValues;
@@ -107,8 +108,8 @@ public class TerminalUI {
 	}
 
 	private void computerList() {
-		ArrayList<Computer> computerList = computerServices.getAllComputeur(-1l, -1l);
-		for (Computer computer : computerList) {
+		ArrayList<ComputerDTO> computerList = computerServices.getAllComputeur(-1l, -1l);
+		for (ComputerDTO computer : computerList) {
 			System.out.println(computer.toStringMin());
 		}
 	}
@@ -166,7 +167,7 @@ public class TerminalUI {
 		} catch (Exception e) {
 			idCompany = null;
 		}
-
+/*
 		try {
 			computerServices.insertComputer(name, introduced, discontinued,
 					idCompany);
@@ -174,7 +175,7 @@ public class TerminalUI {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}
+		}*/
 	}
 
 	private void updateComputer() {
@@ -218,7 +219,7 @@ public class TerminalUI {
 		} catch (Exception e) {
 			idCompany = null;
 		}
-
+/*
 		try {
 			computerServices.updateComputer(name, introduced, discontinued,
 					idCompany, id);
@@ -226,7 +227,7 @@ public class TerminalUI {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}
+		}*/
 	}
 
 	private void removeComputer() {

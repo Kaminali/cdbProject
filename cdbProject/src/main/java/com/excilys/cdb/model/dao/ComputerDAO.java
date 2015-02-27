@@ -54,8 +54,8 @@ public class ComputerDAO extends BaseDAO {
 			initStatement();
 			statement = connection
 					.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ? OFFSET ?;");
-			statement.setLong(1, begin);
-			statement.setLong(2, nb);
+			statement.setLong(1, nb);
+			statement.setLong(2, begin);
 			result = statement.executeQuery();
 			while (result.next()) {
 
@@ -172,6 +172,28 @@ public class ComputerDAO extends BaseDAO {
 			closeStatement();
 		}
 		return true;
+	}
+
+	public int getNb() {
+		int test = 0;
+		try {
+			initStatement();
+			statement = connection
+					.prepareStatement("SELECT COUNT(id) FROM computer;");
+
+			result = statement.executeQuery();
+			while (result.next()) {
+				test = result.getInt(1);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeStatement();
+		}
+		
+		return test;
+		
 	}
 
 }

@@ -9,9 +9,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="../css/main.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -37,7 +37,7 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
+					<a class="btn btn-success" id="addComputer" href="AddComputer">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -72,7 +72,7 @@
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
-				<tbody id="results"> 
+				<tbody id="results">
 					<%
 						String list = (String) request.getAttribute("resultat");
 						out.println(list);
@@ -83,29 +83,14 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<div class="container text-center">
-			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-				</a></li>
-				<li><a href="Dashboard?p=1">1</a></li>
-				<li><a href="Dashboard?p=2">2</a></li>
-				<li><a href="Dashboard?p=3">3</a></li>
-				<li><a href="Dashboard?p=4">4</a></li>
-				<li><a href="Dashboard?p=5">5</a></li>
-				<li><a href="Dashboard?p=2" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
-			</ul>
-		</div>
-		<div class="btn-group btn-group-sm pull-right" role="group">
-			<button type="button" class="btn btn-default">10</button>
-			<button type="button" class="btn btn-default">50</button>
-			<button type="button" class="btn btn-default">100</button>
-		</div>
-
+		<%
+			String list2 = (String) request.getAttribute("pagination");
+			out.println(list2);
+		%>
 	</footer>
-	<script src="../js/jquery.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
-	<script src="../js/dashboard.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/dashboard.js"></script>
 
 </body>
 </html>

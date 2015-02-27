@@ -11,8 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.services.ComputerServices;
-import com.excilys.cdb.model.bean.Computer;
 
 /**
  * @author excilys
@@ -38,13 +38,15 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 		ComputerServices computerServices = new ComputerServices();
 
 		long p = (request.getParameter("p") != null) ? Long.valueOf(request.getParameter("p")) : 1;
-		long nb = (request.getParameter("nb") != null) ? Long.valueOf(request.getParameter("p")) : 10;
+		long nb = (request.getParameter("nb") != null) ? Long.valueOf(request.getParameter("nb")) : 10;
+		nb = (request.getParameter("nbB") != null) ? Long.valueOf(request.getParameter("nbB")) : nb;
 		
-		ArrayList<Computer> computerList = computerServices.getAllComputeur(p, nb);
+		
+		ArrayList<ComputerDTO> computerList = computerServices.getAllComputeur((p-1)*nb, nb);
 
 		StringBuilder rep = new StringBuilder();
 
-		for (Computer computer : computerList) {
+		for (ComputerDTO computer : computerList) {
 
 			rep.append("<tr><td class=\"editMode\"><input type=\"checkbox\" name=\"cb\" class=\"cb\" value=\"");
 			rep.append(computer.getId());
@@ -55,56 +57,58 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 			rep.append("</td><td>");
 			rep.append(computer.getDiscontinued());
 			rep.append("</td><td>");
-			rep.append((-1 == computer.getCompany().getId()) ? "" : computer
-					.getCompany().getName());
+			rep.append((-1 == computer.getCompanyDto().getId()) ? "" : computer.getCompanyDto().getName());
 			rep.append("</td></tr>");
 
 		}
 
 		request.setAttribute("resultat", rep.toString());
-		request.setAttribute("pagination", pagination(request));
+		request.setAttribute("pagination", pagination(p, nb, computerServices.getNb()));
 
 		getServletContext().getRequestDispatcher("/views/dashboard.jsp")
 				.forward(request, response);
 	}
 
-	private String pagination(HttpServletRequest request) {
-		long p = (request.getParameter("p") != null) ? Long.valueOf(request.getParameter("p")) : 1;
-		long nb = (request.getParameter("nb") != null) ? Long.valueOf(request.getParameter("p")) : 10;
-
+	private String pagination(long p, long nb, int max) {
+		long last = max / nb + 1;
 		StringBuilder pag = new StringBuilder();
 
 		pag.append("<div class=\"container text-center\"><ul class=\"pagination\">");
 
-		pag.append("<li><a href=\"Dashboard?p=");
-		pag.append(p-1);
-		pag.append("&nb=");
-		pag.append(nb);
-		pag.append("\" aria-label=\"Previous\"> <span aria-hidden=\"true\">&laquo;</span></a></li>");
-
-		for (long i = p - 2; i <= p + 2; i++) {
+		if (p > 1) {
 			pag.append("<li><a href=\"Dashboard?p=");
-			pag.append(i);
+			pag.append(p - 1);
 			pag.append("&nb=");
 			pag.append(nb);
-			pag.append(">");
-			pag.append(i);
-			pag.append("</a></li>");
+			pag.append("\" aria-label=\"Previous\"> <span aria-hidden=\"true\">&laquo;</span></a></li>");
 		}
-
-		pag.append("<li><a href=\"Dashboard?p=");
-		pag.append(p+1);
-		pag.append("&nb=");
-		pag.append(nb);
-		pag.append("\" aria-label=\"Next\"> <span aria-hidden=\"true\">&raquo;</span></a></li>");
-
-		pag.append("</ul></div>");
-
+		for (long i = p - 5; i <= p + 5; i++) {
+			if (i > 0 && i <= last) {
+				pag.append("<li><a href=\"Dashboard?p=");
+				pag.append(i);
+				pag.append("&nb=");
+				pag.append(nb);
+				pag.append("\">");
+				pag.append(i);
+				pag.append("</a></li>");
+			}
+		}
+		if (p < last) {
+			pag.append("<li><a href=\"Dashboard?p=");
+			pag.append(p + 1);
+			pag.append("&nb=");
+			pag.append(nb);
+			pag.append("\" aria-label=\"Next\"> <span aria-hidden=\"true\">&raquo;</span></a></li>");
+		}
+		pag.append("</ul>");
 		pag.append("<div class=\"btn-group btn-group-sm pull-right\" role=\"group\">");
-		pag.append("<button type=\"button\" class=\"btn btn-default\">10</button>");
-		pag.append("<button type=\"button\" class=\"btn btn-default\">50</button>");
-		pag.append("<button type=\"button\" class=\"btn btn-default\">100</button>");
-		pag.append("</div>");
+		pag.append("<form action=\"Dashboard?p=");
+		pag.append(p);
+		pag.append("\" method=\"post\">");
+		pag.append("<button name=\"nbB\" type=\"button\" value=\"10\" class=\"btn btn-default\" >10</button>");
+		pag.append("<button name=\"nbB\" type=\"button\" value=\"50\" class=\"btn btn-default\" >50</button>");
+		pag.append("<button name=\"nbB\" type=\"button\" value=\"100\" class=\"btn btn-default\" >100</button>");
+		pag.append("</form></div></div>");
 
 		return pag.toString();
 	}

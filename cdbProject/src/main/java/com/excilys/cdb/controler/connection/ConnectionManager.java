@@ -1,4 +1,4 @@
-package com.excilys.cdb.model.dao;
+package com.excilys.cdb.controler.connection;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,9 +8,9 @@ import java.util.Properties;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
-public final class ConnectionManager {
+public enum ConnectionManager implements IConnectionManager {
 
-	private static ConnectionManager instance;
+	instance;
 	protected BoneCP connectionPool;
 
 	private final static String PROPERTY_CONFIG = "config.properties";
@@ -25,18 +25,10 @@ public final class ConnectionManager {
 	private final String driver;
 	
 
-	public static ConnectionManager getInstance() {
-		if (ConnectionManager.instance == null) {
-			ConnectionManager.instance = new ConnectionManager();
-		}
-
-		return ConnectionManager.instance;
-	}
 	
 	private ConnectionManager() {
 		// Chemin du fichier contenant les informations de connexions
-		// String configPath = PROPERTY_CONFIG;
-
+		
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties();
 		try {
@@ -75,7 +67,8 @@ public final class ConnectionManager {
         }
 	}
 
-	Connection getConnection() {
+	@Override
+	public Connection getConnection() {
         try {
 			return connectionPool.getConnection();
 		} catch (SQLException e) {
@@ -83,8 +76,9 @@ public final class ConnectionManager {
 			throw new Error("impossible de se connecter");
 		}
     }
-	
-	public void closeConnection() throws SQLException {
+
+	@Override
+	public void closeAll() throws Exception {
 		try {
 			connectionPool.close();
 			connectionPool = null;
@@ -94,13 +88,4 @@ public final class ConnectionManager {
 		}
 	}
 
-	@Override
-	public void finalize() {
-		try {
-			closeConnection();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

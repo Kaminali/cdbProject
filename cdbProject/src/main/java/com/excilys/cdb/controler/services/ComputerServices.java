@@ -5,13 +5,12 @@ package com.excilys.cdb.controler.services;
 
 import java.util.List;
 
+import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.validate.CheckValues;
 import com.excilys.cdb.model.bean.Computer;
-import com.excilys.cdb.model.dao.CompanyDAO;
 import com.excilys.cdb.model.dao.ComputerDAO;
-import com.excilys.cdb.model.dao.ConnectionManager;
 
 /**
  * @author excilys
@@ -20,11 +19,9 @@ import com.excilys.cdb.model.dao.ConnectionManager;
 public class ComputerServices {
 
 	private ComputerDAO computerDAO;
-	private CompanyDAO companyDAO;
 
 	public ComputerServices() {
-		computerDAO = new ComputerDAO(ConnectionManager.getInstance());
-		companyDAO = new CompanyDAO(ConnectionManager.getInstance());
+		computerDAO = new ComputerDAO(ConnectionManager.instance);
 	}
 
 	public List<Computer> getAllComputer(long begin, long nb) {
@@ -40,7 +37,6 @@ public class ComputerServices {
 
 	public Computer getComputerById(long id) {
 		Computer computer = computerDAO.getById(id);
-		computer.setCompany(companyDAO.getById(id));
 		return computer;
 	}
 

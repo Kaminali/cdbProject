@@ -6,6 +6,7 @@ package com.excilys.cdb.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.model.bean.Company;
 
 /**
@@ -41,7 +42,7 @@ public class CompanyDAO extends BaseDAO {
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		} finally {
-			closeStatement();
+			close();
 		}
 
 		return listC;
@@ -67,7 +68,7 @@ public class CompanyDAO extends BaseDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeStatement();
+			close();
 		}
 
 		return company;

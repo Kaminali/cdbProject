@@ -1,10 +1,10 @@
 package com.excilys.cdb.controler.validate;
 
+import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.model.bean.Company;
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.dao.CompanyDAO;
 import com.excilys.cdb.model.dao.ComputerDAO;
-import com.excilys.cdb.model.dao.ConnectionManager;
 
 public class CheckValues {
 
@@ -16,7 +16,7 @@ public class CheckValues {
 	}
 
 	public static void checkCompany(Long idCompany) throws Exception {
-		CompanyDAO companyDAO = new CompanyDAO(ConnectionManager.getInstance());
+		CompanyDAO companyDAO = new CompanyDAO(ConnectionManager.instance);
 		Company company = companyDAO.getById(idCompany);
 		if (company.getId() == -1l) {
 			throw new Exception("ID de company incorrecte");
@@ -24,7 +24,7 @@ public class CheckValues {
 	}
 
 	public static void checkComputer(Long idComputer) throws Exception {
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.getInstance());
+		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance);
 		Computer computer = computerDAO.getById(idComputer);
 		if (computer.getId() == -1l) {
 			throw new Exception("ID d'ordinateur incorrecte");

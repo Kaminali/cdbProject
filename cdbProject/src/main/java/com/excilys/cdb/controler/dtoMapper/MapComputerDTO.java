@@ -7,7 +7,7 @@ import java.util.List;
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.model.bean.Computer;
 
-public class MapComputerDTO {
+public final class MapComputerDTO {
 
 	public static List<Computer> DtoToModel(
 			List<ComputerDTO> computerDtoL) {
@@ -18,8 +18,7 @@ public class MapComputerDTO {
 		return computerL;
 	}
 
-	public static List<ComputerDTO> ModelToDto(
-			List<Computer> computerL) {
+	public static List<ComputerDTO> ModelToDto(List<Computer> computerL) {
 		List<ComputerDTO> computerDtoL = new ArrayList<ComputerDTO>();
 		for (Computer computer : computerL) {
 			computerDtoL.add(ModelToDto(computer));
@@ -53,13 +52,9 @@ public class MapComputerDTO {
 		ComputerDTO computerDto = new ComputerDTO();
 		computerDto.setName(computer.getName());
 		computerDto.setId(computer.getId());
-		computerDto.setIntroduced((computer.getIntroduced() != null) ? computer
-				.getIntroduced().toString() : null);
-		computerDto
-				.setDiscontinued((computer.getDiscontinued() != null) ? computer
-						.getDiscontinued().toString() : null);
-		computerDto.setCompanyDto(MapCompanyDTO.ModelToDto(computer
-				.getCompany()));
+		computerDto.setIntroduced((computer.getIntroduced() != null) ? computer.getIntroduced().toString() : null);
+		computerDto.setDiscontinued((computer.getDiscontinued() != null) ? computer.getDiscontinued().toString() : null);
+		computerDto.setCompanyDto(MapCompanyDTO.ModelToDto(computer.getCompany()));
 
 		return computerDto;
 	}

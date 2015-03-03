@@ -79,7 +79,7 @@
 					<c:forEach var="entry" items="${resultatC}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb" class="cb" value="${entry.getId()}"></td>
-							<td><a href="editComputer.html" onclick="">${entry.getName()}</a></td>
+							<td><a href="AddComputer?id=${entry.getId()}" onclick="">${entry.getName()}</a></td>
 							<td>${entry.getIntroduced()}</td>
 							<td>${entry.getDiscontinued()}</td>
 							<td>${entry.getCompanyDto().getName()}</td>

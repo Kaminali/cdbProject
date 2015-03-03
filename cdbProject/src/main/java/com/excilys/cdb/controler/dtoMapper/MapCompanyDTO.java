@@ -6,16 +6,16 @@ package com.excilys.cdb.controler.dtoMapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.model.bean.Company;
 import com.excilys.cdb.model.dao.CompanyDAO;
-import com.excilys.cdb.model.dao.ConnectionManager;
 
 /**
  * @author excilys
  *
  */
-public class MapCompanyDTO {
+public final class MapCompanyDTO {
 
 	public static List<Company> DtoToModel(List<CompanyDTO> companyDtoL) {
 		List<Company> companyL = new ArrayList<Company>();
@@ -37,7 +37,7 @@ public class MapCompanyDTO {
 		Company company = new Company();
 		company.setId(companyDto.getId());
 		if (companyDto.getId() != null && companyDto.getId() != -1 && (companyDto.getName() == null || companyDto.getName() == "")) {
-			CompanyDAO companyDAO = new CompanyDAO(ConnectionManager.getInstance());
+			CompanyDAO companyDAO = new CompanyDAO(ConnectionManager.instance);
 			company = companyDAO.getById(companyDto.getId());
 		} else {
 			company.setName(companyDto.getName());

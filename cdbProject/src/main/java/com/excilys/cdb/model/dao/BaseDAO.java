@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.excilys.cdb.controler.connection.IConnectionManager;
 
 /**
  * @author excilys
@@ -16,12 +17,12 @@ import java.util.List;
  */
 public abstract class BaseDAO {
 
-	protected ConnectionManager connectionManager;
+	protected IConnectionManager connectionManager;
 	protected ResultSet result;
 	protected PreparedStatement statement;
 	protected Connection connection;
 
-	public BaseDAO(ConnectionManager connectionManager) {
+	public BaseDAO(IConnectionManager connectionManager) {
 		this.connectionManager = connectionManager;
 	}
 
@@ -32,38 +33,45 @@ public abstract class BaseDAO {
 		connection = connectionManager.getConnection();
 	}
 
-	protected void closeStatement() {
+	protected void close() {
 
 		try {
-			if (result != null)
-
+			if (result != null) {
 				result.close();
-
-			if (statement != null)
-
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		
+		try {
+			if (statement != null) {
 				statement.close();
-
-			if (statement != null)
-			
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		
+		try {
+			if (statement != null) {
 				connection.close();
-
+			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
-	
+
 	public <T> List<T> getList(Long begin, Long nb) {
 		throw new RuntimeException("not implemented yet");
 	}
-	
+
 	/**
-	* Can get too many data
-	*/
+	 * Can get too many data
+	 */
 	@Deprecated
 	public <T> List<T> getList() {
 		throw new RuntimeException("not implemented yet");
 	}
-	
+
 	public <T> List<T> getListById(List<Long> listId) {
 		throw new RuntimeException("not implemented yet");
 	}
@@ -75,7 +83,7 @@ public abstract class BaseDAO {
 	public boolean insert(Object e) {
 		throw new RuntimeException("not implemented yet");
 	}
-	
+
 	public boolean update(Object e) {
 		throw new RuntimeException("not implemented yet");
 	}

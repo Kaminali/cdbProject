@@ -38,13 +38,12 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 			HttpServletResponse response) throws ServletException, IOException {
 		ComputerServices computerServices = new ComputerServices();
 
-		long p = (request.getParameter("p") != null) ? Long.valueOf(request.getParameter("p")) : 1;
-		long nb = (request.getParameter("nb") != null) ? Long.valueOf(request.getParameter("nb")) : 10;
+		long p = (request.getParameter("p") != null) ? Long.valueOf(request.getParameter("p")) : 1l;
+		long nb = (request.getParameter("nb") != null) ? Long.valueOf(request.getParameter("nb")) : 10l;
 		nb = (request.getParameter("nbB") != null) ? Long.valueOf(request.getParameter("nbB")) : nb;
-		p = (request.getParameter("nbB") != null) ? 1 : p;
+		p = (request.getParameter("nbB") != null) ? 1l : p;
 		
 		List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer((p-1)*nb, nb));
-
 		request.setAttribute("resultatC", computerList);
 		request.setAttribute("page", p);
 		request.setAttribute("offset", nb);

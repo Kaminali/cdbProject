@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.mapper.MapComputer;
 
@@ -31,7 +32,9 @@ public class ComputerDAO extends BaseDAO {
 		try {
 			initStatement();
 			statement = connection
-					.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer;");
+					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name AS cname FROM computer "
+							+" LEFT JOIN company "
+							+" ON computer.company_id = company.id ;");
 			result = statement.executeQuery();
 			while (result.next()) {
 
@@ -42,7 +45,7 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			closeStatement();
+			close();
 		}
 
 		return listC;
@@ -57,7 +60,10 @@ public class ComputerDAO extends BaseDAO {
 		try {
 			initStatement();
 			statement = connection
-					.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer LIMIT ? OFFSET ?;");
+					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
+							+" LEFT JOIN company "
+							+" ON computer.company_id = company.id "
+							+ " LIMIT ? OFFSET ?;");
 			statement.setLong(1, nb);
 			statement.setLong(2, begin);
 			result = statement.executeQuery();
@@ -70,7 +76,7 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			closeStatement();
+			close();
 		}
 
 		return listC;
@@ -84,7 +90,10 @@ public class ComputerDAO extends BaseDAO {
 		try {
 			initStatement();
 			statement = connection
-					.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id = ?;");
+					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
+							+" LEFT JOIN company "
+							+" ON computer.company_id = company.id "
+							+ "WHERE computer.id = ?;");
 			statement.setLong(1, id);
 			result = statement.executeQuery();
 			while (result.next()) {
@@ -94,7 +103,7 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			closeStatement();
+			close();
 		}
 
 		return computer;
@@ -131,7 +140,7 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			closeStatement();
+			close();
 		}
 		return true;
 	}
@@ -160,7 +169,7 @@ public class ComputerDAO extends BaseDAO {
 			e.printStackTrace();
 			return false;
 		} finally {
-			closeStatement();
+			close();
 		}
 		return true;
 	}
@@ -181,7 +190,7 @@ public class ComputerDAO extends BaseDAO {
 			e.printStackTrace();
 			return false;
 		} finally {
-			closeStatement();
+			close();
 		}
 		return true;
 	}
@@ -201,7 +210,7 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeStatement();
+			close();
 		}
 
 		return test;

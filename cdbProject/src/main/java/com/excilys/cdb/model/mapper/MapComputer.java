@@ -36,7 +36,8 @@ public class MapComputer {
 		}
 		try {
 			Company company = new Company();
-			company.setId(result.getLong("company_id"));
+			company.setId(result.getLong("cid"));
+			company.setName(result.getString("cname"));
 			computer.setCompany(company);
 		} catch (SQLException e) {
 			Company company = new Company();

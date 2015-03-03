@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -29,7 +29,7 @@ public abstract class BaseDAO {
 
 		result = null;
 		statement = null;
-		connection = connectionManager.openConnection();
+		connection = connectionManager.getConnection();
 	}
 
 	protected void closeStatement() {
@@ -43,19 +43,16 @@ public abstract class BaseDAO {
 
 				statement.close();
 
+			if (statement != null)
+			
+				connection.close();
+
 		} catch (SQLException e) {
 			throw new RuntimeException(e.getMessage());
 		}
-
-		try {
-			connectionManager.closeConnection();
-		} catch (SQLException e) {
-			throw new RuntimeException(e.getMessage());
-		}
-
 	}
 	
-	public <T> ArrayList<T> getList(Long begin, Long nb) {
+	public <T> List<T> getList(Long begin, Long nb) {
 		throw new RuntimeException("not implemented yet");
 	}
 	
@@ -63,11 +60,11 @@ public abstract class BaseDAO {
 	* Can get too many data
 	*/
 	@Deprecated
-	public <T> ArrayList<T> getList() {
+	public <T> List<T> getList() {
 		throw new RuntimeException("not implemented yet");
 	}
 	
-	public <T> ArrayList<T> getListById(ArrayList<Long> listId) {
+	public <T> List<T> getListById(List<Long> listId) {
 		throw new RuntimeException("not implemented yet");
 	}
 

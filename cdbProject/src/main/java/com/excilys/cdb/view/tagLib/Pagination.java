@@ -23,7 +23,6 @@ public class Pagination extends TagSupport {
 			long max = Long.valueOf(this.max);
 			long last = max / nb + 1;
 			
-			
 			pageContext.getOut().println("<div class=\"container text-center\"><ul class=\"pagination\">");
 
 			if (p > 1) {
@@ -35,7 +34,14 @@ public class Pagination extends TagSupport {
 				if (i > 0 && i <= last) {
 					pageContext.getOut().println("<li><a href=\"Dashboard?p=" + i);
 					pageContext.getOut().println("&nb=" + nb);
-					pageContext.getOut().println("\">" + i);
+					pageContext.getOut().println("\">");
+					if(p==i) {
+						pageContext.getOut().println("<b>");
+					}
+					pageContext.getOut().println(i);
+					if(p==i) {
+						pageContext.getOut().println("</b>");
+					}
 					pageContext.getOut().println("</a></li>");
 				}
 			}
@@ -46,8 +52,7 @@ public class Pagination extends TagSupport {
 			}
 			pageContext.getOut().println("</ul>");
 			pageContext.getOut().println("<div class=\"btn-group btn-group-sm pull-right\" role=\"group\">");
-			pageContext.getOut().println("<form action=\"Dashboard?p=" + p);
-			pageContext.getOut().println("\" method=\"post\">");
+			pageContext.getOut().println("<form action=\"Dashboard\" method=\"post\">");
 			pageContext.getOut().println("<button name=\"nbB\" type=\"submit\" value=\"10\" class=\"btn btn-default\" >10</button>");
 			pageContext.getOut().println("<button name=\"nbB\" type=\"submit\" value=\"50\" class=\"btn btn-default\" >50</button>");
 			pageContext.getOut().println("<button name=\"nbB\" type=\"submit\" value=\"100\" class=\"btn btn-default\" >100</button>");

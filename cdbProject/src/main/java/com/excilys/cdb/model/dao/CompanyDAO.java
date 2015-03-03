@@ -4,6 +4,7 @@
 package com.excilys.cdb.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.model.bean.Company;
 
@@ -19,9 +20,9 @@ public class CompanyDAO extends BaseDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<Company> getList() {
+	public List<Company> getList() {
 
-		ArrayList<Company> listC = new ArrayList<Company>();
+		List<Company> listC = new ArrayList<Company>();
 
 		try {
 			initStatement();

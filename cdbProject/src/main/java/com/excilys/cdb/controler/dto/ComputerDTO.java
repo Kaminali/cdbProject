@@ -14,7 +14,8 @@ public class ComputerDTO {
 	private String name;
 	private String introduced;
 	private String discontinued;
-	private CompanyDTO companyDto;
+	private CompanyDTO companyDto;	
+	
 
 	public Long getId() {
 		return id;

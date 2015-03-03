@@ -3,13 +3,11 @@
  */
 package com.excilys.cdb.controler.services;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.validate.CheckValues;
-import com.excilys.cdb.model.bean.Company;
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.dao.CompanyDAO;
 import com.excilys.cdb.model.dao.ComputerDAO;
@@ -29,18 +27,18 @@ public class ComputerServices {
 		companyDAO = new CompanyDAO(ConnectionManager.getInstance());
 	}
 
-	public ArrayList<ComputerDTO> getAllComputeur(long begin, long nb) {
-		ArrayList<Computer> computerList;
+	public List<Computer> getAllComputer(long begin, long nb) {
+		List<Computer> computerList;
 		if (begin == -1 || nb == -1) {
 			computerList = computerDAO.getList();
 		} else {
 			computerList = computerDAO.getList(begin, nb);
 		}
 
-		return MapComputerDTO.ModelToDto(computerList);
+		return computerList;
 	}
 
-	public Computer getComputeurById(long id) {
+	public Computer getComputerById(long id) {
 		Computer computer = computerDAO.getById(id);
 		computer.setCompany(companyDAO.getById(id));
 		return computer;
@@ -48,8 +46,7 @@ public class ComputerServices {
 
 	public void insertComputer(ComputerDTO computerDto) throws Exception {
 
-		Computer computer = MapComputerDTO.DtoToModel(computerDto);
-		computerDAO.insert(computer);
+		computerDAO.insert(MapComputerDTO.DtoToModel(computerDto));
 
 	}
 

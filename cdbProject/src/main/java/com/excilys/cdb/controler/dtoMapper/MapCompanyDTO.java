@@ -4,6 +4,7 @@
 package com.excilys.cdb.controler.dtoMapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.model.bean.Company;
@@ -16,16 +17,16 @@ import com.excilys.cdb.model.dao.ConnectionManager;
  */
 public class MapCompanyDTO {
 
-	public static ArrayList<Company> DtoToModel(ArrayList<CompanyDTO> companyDtoL) {
-		ArrayList<Company> companyL = new ArrayList<Company>();
+	public static List<Company> DtoToModel(List<CompanyDTO> companyDtoL) {
+		List<Company> companyL = new ArrayList<Company>();
 		for (CompanyDTO companyDto : companyDtoL) {
 			companyL.add(DtoToModel(companyDto));
 		}
 		return companyL;
 	}
 
-	public static ArrayList<CompanyDTO> ModelToDto(ArrayList<Company> companyL) {
-		ArrayList<CompanyDTO> companyDtoL = new ArrayList<CompanyDTO>();
+	public static List<CompanyDTO> ModelToDto(List<Company> companyL) {
+		List<CompanyDTO> companyDtoL = new ArrayList<CompanyDTO>();
 		for (Company company : companyL) {
 			companyDtoL.add(ModelToDto(company));
 		}

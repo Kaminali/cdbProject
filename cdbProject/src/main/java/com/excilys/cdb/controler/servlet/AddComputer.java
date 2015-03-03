@@ -1,7 +1,7 @@
 package com.excilys.cdb.controler.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.controler.dto.ComputerDTO;
+import com.excilys.cdb.controler.dtoMapper.MapCompanyDTO;
 import com.excilys.cdb.controler.services.CompanyServices;
 import com.excilys.cdb.controler.services.ComputerServices;
 
@@ -36,20 +37,12 @@ public class AddComputer extends HttpServlet {
 		CompanyServices companyServices = new CompanyServices();
 		
 		
-		ArrayList<CompanyDTO> companyList = companyServices.getAllCompany();
+		List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
 		
-		StringBuilder listC = new StringBuilder();
-		listC.append("<option value=\"0\">--</option>");
 		
-		for(CompanyDTO company : companyList) {
-			listC.append("<option value=\"");
-			listC.append(company.getId());
-			listC.append("\">");
-			listC.append(company.getName());
-			listC.append("</option>");
-		}
-		
-		request.setAttribute("companyL", listC.toString());
+		request.setAttribute("companyL", companyList);
+
+		request.setAttribute("result", (request.getAttribute("result") != null) ? request.getAttribute("result") : "");
 		
 		getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
@@ -59,6 +52,7 @@ public class AddComputer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ComputerDTO computerDto = new ComputerDTO();
+		String result = null;
 		if(request.getParameter("computerName") != null) {
 			computerDto.setName(request.getParameter("computerName"));
 			computerDto.setIntroduced(request.getParameter("introduced"));
@@ -69,12 +63,15 @@ public class AddComputer extends HttpServlet {
 			ComputerServices computerServices = new ComputerServices();
 			try {
 				computerServices.insertComputer(computerDto);
+				result = "succes";
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				result = "operation fail";
 			}
+			
 		}
-		getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
+		request.setAttribute("result", result);
+		this.doGet(request, response);
 	}
 
 }

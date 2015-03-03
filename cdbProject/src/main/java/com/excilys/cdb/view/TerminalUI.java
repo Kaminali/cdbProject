@@ -3,16 +3,16 @@
  */
 package com.excilys.cdb.view;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.controler.dto.ComputerDTO;
+import com.excilys.cdb.controler.dtoMapper.MapCompanyDTO;
+import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.services.ComputerServices;
 import com.excilys.cdb.controler.services.CompanyServices;
 import com.excilys.cdb.controler.validate.CheckValues;
-import com.excilys.cdb.model.bean.Company;
-import com.excilys.cdb.model.bean.Computer;
-
 /**
  * @author excilys
  *
@@ -108,7 +108,7 @@ public class TerminalUI {
 	}
 
 	private void computerList() {
-		ArrayList<ComputerDTO> computerList = computerServices.getAllComputeur(-1l, -1l);
+		List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer(-1l, -1l));
 		for (ComputerDTO computer : computerList) {
 			System.out.println(computer.toStringMin());
 		}
@@ -126,7 +126,7 @@ public class TerminalUI {
 
 		try {
 			CheckValues.checkComputer(id);
-			Computer computer = computerServices.getComputeurById(id);
+			ComputerDTO computer = MapComputerDTO.ModelToDto(computerServices.getComputerById(id));
 			System.out.println(computer.toString());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -135,10 +135,10 @@ public class TerminalUI {
 	}
 
 	private void companyList() {
-		/*ArrayList<Company> companyList = companyServices.getAllCompany();
-		for (Company company : companyList) {
+		List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
+		for (CompanyDTO company : companyList) {
 			System.out.println(company.toString());
-		}*/
+		}
 	}
 
 	private void addComputer() {
@@ -167,15 +167,21 @@ public class TerminalUI {
 		} catch (Exception e) {
 			idCompany = null;
 		}
-/*
+
 		try {
-			computerServices.insertComputer(name, introduced, discontinued,
-					idCompany);
+			ComputerDTO computerDto = new ComputerDTO();
+			computerDto.setName(name);
+			computerDto.setIntroduced(introduced);
+			computerDto.setDiscontinued(discontinued);
+			CompanyDTO companyDto = new CompanyDTO();
+			companyDto.setId(idCompany);
+			computerDto.setCompanyDto(companyDto);
+			computerServices.insertComputer(computerDto);
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}*/
+		}
 	}
 
 	private void updateComputer() {
@@ -219,15 +225,21 @@ public class TerminalUI {
 		} catch (Exception e) {
 			idCompany = null;
 		}
-/*
+
 		try {
-			computerServices.updateComputer(name, introduced, discontinued,
-					idCompany, id);
+			ComputerDTO computerDto = new ComputerDTO();
+			computerDto.setName(name);
+			computerDto.setIntroduced(introduced);
+			computerDto.setDiscontinued(discontinued);
+			CompanyDTO companyDto = new CompanyDTO();
+			companyDto.setId(idCompany);
+			computerDto.setCompanyDto(companyDto);
+			computerServices.updateComputer(computerDto);
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
 			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}*/
+		}
 	}
 
 	private void removeComputer() {

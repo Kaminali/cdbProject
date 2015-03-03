@@ -3,7 +3,8 @@
  */
 package com.excilys.cdb.model.bean;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
+
 
 /**
  * @author Nicolas Guibert
@@ -13,8 +14,8 @@ public class Computer {
 
 	private Long id;
 	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
+	private LocalDate introduced;
+	private LocalDate discontinued;
 	private Company company;
 
 	public Computer() {
@@ -36,19 +37,19 @@ public class Computer {
 		this.name = name;
 	}
 
-	public Timestamp getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
-	public void setIntroduced(Timestamp introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
-	public Timestamp getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setDiscontinued(Timestamp discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 

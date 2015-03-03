@@ -21,12 +21,16 @@ public class MapComputer {
 			computer.setName(null);
 		}
 		try {
-			computer.setIntroduced(result.getTimestamp("introduced"));
+			computer.setIntroduced((result.getTimestamp("introduced") != null) ? 
+					result.getTimestamp("introduced").toLocalDateTime().toLocalDate()
+					: null);
 		} catch (SQLException e) {
 			computer.setIntroduced(null);
 		}
 		try {
-			computer.setDiscontinued(result.getTimestamp("discontinued"));
+			computer.setDiscontinued((result.getTimestamp("discontinued") != null) ? 
+					result.getTimestamp("discontinued").toLocalDateTime().toLocalDate()
+					: null);
 		} catch (SQLException e) {
 			computer.setDiscontinued(null);
 		}

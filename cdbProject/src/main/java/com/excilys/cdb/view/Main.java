@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		LOGGER.info("Logger launch");
-			
+		
 		TerminalUI terminal = new TerminalUI();
 		terminal.launchUI();
 	}

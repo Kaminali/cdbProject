@@ -1,8 +1,5 @@
 package com.excilys.cdb.controler.validate;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import com.excilys.cdb.model.bean.Company;
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.dao.CompanyDAO;
@@ -32,22 +29,6 @@ public class CheckValues {
 		if (computer.getId() == -1l) {
 			throw new Exception("ID d'ordinateur incorrecte");
 		}
-	}
-
-	public static Timestamp stringToTimestamp(String date) throws Exception {
-		Timestamp dateTS = null;
-		if (date != "") {
-			try {
-				dateTS = Timestamp.valueOf(date);
-			} catch (Exception e) {
-				try {
-					dateTS = new Timestamp(Date.valueOf(date).getTime());
-				} catch (Exception e2) {
-					throw new Exception("Erreur de format de date");
-				}
-			}
-		}
-		return dateTS;
 	}
 
 }

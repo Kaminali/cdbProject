@@ -3,7 +3,11 @@
  */
 package com.excilys.cdb.model.dao;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.mapper.MapComputer;
@@ -20,9 +24,9 @@ public class ComputerDAO extends BaseDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<Computer> getList() {
+	public List<Computer> getList() {
 
-		ArrayList<Computer> listC = new ArrayList<Computer>();
+		List<Computer> listC = new ArrayList<Computer>();
 
 		try {
 			initStatement();
@@ -46,9 +50,9 @@ public class ComputerDAO extends BaseDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<Computer> getList(Long begin, Long nb) {
+	public List<Computer> getList(Long begin, Long nb) {
 
-		ArrayList<Computer> listC = new ArrayList<Computer>();
+		List<Computer> listC = new ArrayList<Computer>();
 
 		try {
 			initStatement();
@@ -106,10 +110,18 @@ public class ComputerDAO extends BaseDAO {
 					.prepareStatement("INSERT into computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?);");
 
 			statement.setString(1, computer.getName());
-			statement.setTimestamp(2, computer.getIntroduced());
-			statement.setTimestamp(3, computer.getDiscontinued());
+			statement.setTimestamp(2, (computer.getIntroduced() != null) ? 
+					Timestamp.valueOf(LocalDateTime.of(computer.getIntroduced(), LocalTime.of(0, 0))) 
+					: null);
+			statement.setTimestamp(3, (computer.getDiscontinued() != null) ? 
+					Timestamp.valueOf(LocalDateTime.of(computer.getDiscontinued(), LocalTime.of(0, 0)))
+					: null);
 			if (computer.getCompany() != null) {
-				statement.setLong(4, computer.getCompany().getId());
+				if (computer.getCompany().getId() > 0) {
+					statement.setLong(4, computer.getCompany().getId());
+				} else {
+					statement.setNull(4, -1);
+				}
 			} else {
 				statement.setNull(4, -1);
 			}
@@ -133,8 +145,8 @@ public class ComputerDAO extends BaseDAO {
 					.prepareStatement("UPDATE computer SET name = ? , introduced = ? , discontinued = ? ,company_id = ? WHERE id = ? ;");
 
 			statement.setString(1, computer.getName());
-			statement.setTimestamp(2, computer.getIntroduced());
-			statement.setTimestamp(3, computer.getDiscontinued());
+			statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.of(computer.getIntroduced(), LocalTime.of(0, 0))));
+			statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.of(computer.getDiscontinued(), LocalTime.of(0, 0))));
 			if (computer.getCompany() != null) {
 				statement.setLong(4, computer.getCompany().getId());
 			} else {
@@ -191,9 +203,9 @@ public class ComputerDAO extends BaseDAO {
 		} finally {
 			closeStatement();
 		}
-		
+
 		return test;
-		
+
 	}
 
 }

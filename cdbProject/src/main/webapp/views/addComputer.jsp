@@ -34,14 +34,14 @@
 					<form action="AddComputer" method="POST">
 						<fieldset>
 						<c:if test="${not empty computerEdit}">
-							<input type="text" hidden="true" id="computerId" value="${computerEdit.getId()}">
+							<input type="text" hidden="true" name="computerId" id="computerId" value="${computerEdit.getId()}">
 						</c:if>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" name="computerName"
 									id="computerName" placeholder="Computer name" required
 									<c:if test="${not empty computerEdit}">
-										<c:out value="value=${computerEdit.getName()}" />
+										value="<c:out value="${computerEdit.getName()}" />"
 									</c:if>
 									>
 							</div>
@@ -74,17 +74,28 @@
 									class="form-control" id="companyId" name="companyId">
 										<option value="0">--</option>
 										<c:forEach var="entry" items="${companyL}">
-											<option value="${entry.getId()}" 
-											<c:if test="${computerEdit.getCompanyDto().getId() == entry.getId()}">
-												<c:out value="selected=selected" />
+											<c:if test="${not empty computerEdit}">
+												<c:if test="${computerEdit.getCompanyDto().getId() == entry.getId()}">
+													<option value="${entry.getId()}" selected="selected" >${entry.getName()}</option>
+												</c:if>
+												<c:if test="${computerEdit.getCompanyDto().getId() != entry.getId()}">
+													<option value="${entry.getId()}" >${entry.getName()}</option>
+												</c:if>
 											</c:if>
-											>${entry.getName()}</option>
+											<c:if test="${empty computerEdit}">
+												<option value="${entry.getId()}" >${entry.getName()}</option>
+											</c:if>
 										</c:forEach>
 								</select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary">
+							<c:if test="${empty computerEdit}">
+								<input type="submit" value="Add" class="btn btn-primary">
+							</c:if>
+							<c:if test="${not empty computerEdit}">
+								<input type="submit" value="Edit" class="btn btn-primary">
+							</c:if>
 							or <a href="Dashboard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>

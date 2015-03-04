@@ -9,28 +9,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.excilys.cdb.controler.connection.IConnectionManager;
-
 /**
  * @author excilys
  *
  */
 public abstract class BaseDAO {
 
-	protected IConnectionManager connectionManager;
 	protected ResultSet result;
 	protected PreparedStatement statement;
 	protected Connection connection;
+	protected boolean autoClose;
 
-	public BaseDAO(IConnectionManager connectionManager) {
-		this.connectionManager = connectionManager;
+	public BaseDAO(Connection connection, boolean autoClose) {
+		this.connection = connection;
+		this.autoClose = autoClose;
 	}
 
 	protected void initStatement() {
 
 		result = null;
 		statement = null;
-		connection = connectionManager.getConnection();
 	}
 
 	protected void close() {
@@ -52,7 +50,7 @@ public abstract class BaseDAO {
 		}
 		
 		try {
-			if (statement != null) {
+			if (statement != null && autoClose == true) {
 				connection.close();
 			}
 		} catch (SQLException e) {
@@ -80,15 +78,15 @@ public abstract class BaseDAO {
 		throw new RuntimeException("not implemented yet");
 	}
 
-	public boolean insert(Object e) {
+	public boolean insert(Object e) throws Exception {
 		throw new RuntimeException("not implemented yet");
 	}
 
-	public boolean update(Object e) {
+	public boolean update(Object e) throws Exception {
 		throw new RuntimeException("not implemented yet");
 	}
 
-	public boolean delete(Object e) {
+	public boolean delete(Object e) throws Exception {
 		throw new RuntimeException("not implemented yet");
 	}
 

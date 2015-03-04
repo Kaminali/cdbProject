@@ -3,10 +3,10 @@
  */
 package com.excilys.cdb.model.dao;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.model.bean.Company;
 
 /**
@@ -15,8 +15,8 @@ import com.excilys.cdb.model.bean.Company;
  */
 public class CompanyDAO extends BaseDAO {
 
-	public CompanyDAO(ConnectionManager connectionManager) {
-		super(connectionManager);
+	public CompanyDAO(Connection connection, boolean autoClose) {
+		super(connection, autoClose);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -73,5 +73,32 @@ public class CompanyDAO extends BaseDAO {
 
 		return company;
 	}
+	
+	@Override
+	public boolean delete(Object companyO) throws Exception {
+		try {
+			Company company = (Company) companyO;
+			initStatement();
+			statement = connection
+					.prepareStatement("DELETE FROM company WHERE id = ? ;");
+
+			statement.setLong(1, company.getId());
+
+			statement.executeUpdate();
+
+		} catch (Exception e) {
+			if(!autoClose) {
+				throw new Exception(e.getMessage());
+			}
+			else {
+				e.printStackTrace();
+				return false;
+			}
+		} finally {
+			close();
+		}
+		return true;
+	}
+
 
 }

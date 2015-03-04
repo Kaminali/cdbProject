@@ -14,6 +14,7 @@ public class Pagination extends TagSupport {
 	private String page;
 	private String max;
 	private String offset;
+	private String search;
 	
 	public int doStartTag() throws JspException {
 		
@@ -21,19 +22,20 @@ public class Pagination extends TagSupport {
 			long p = Long.valueOf(this.page);
 			long nb = Long.valueOf(this.offset);
 			long max = Long.valueOf(this.max);
+			String search = (this.getSearch());
 			long last = max / nb + 1;
 			
 			pageContext.getOut().println("<div class=\"container text-center\"><ul class=\"pagination\">");
 
 			if (p > 1) {
 				pageContext.getOut().println("<li><a href=\"Dashboard?p=" + (p-1));
-				pageContext.getOut().println("&nb=" + nb);
+				pageContext.getOut().println("&nb=" + nb + search);
 				pageContext.getOut().println("\" aria-label=\"Previous\"> <span aria-hidden=\"true\">&laquo;</span></a></li>");
 			}
 			for (long i = p - 5; i <= p + 5; i++) {
 				if (i > 0 && i <= last) {
 					pageContext.getOut().println("<li><a href=\"Dashboard?p=" + i);
-					pageContext.getOut().println("&nb=" + nb);
+					pageContext.getOut().println("&nb=" + nb + search);
 					pageContext.getOut().println("\">");
 					if(p==i) {
 						pageContext.getOut().println("<b>");
@@ -47,12 +49,14 @@ public class Pagination extends TagSupport {
 			}
 			if (p < last) {
 				pageContext.getOut().println("<li><a href=\"Dashboard?p=" + (p+1));
-				pageContext.getOut().println("&nb=" + nb);
+				pageContext.getOut().println("&nb=" + nb + search);
 				pageContext.getOut().println("\" aria-label=\"Next\"> <span aria-hidden=\"true\">&raquo;</span></a></li>");
 			}
 			pageContext.getOut().println("</ul>");
 			pageContext.getOut().println("<div class=\"btn-group btn-group-sm pull-right\" role=\"group\">");
 			pageContext.getOut().println("<form action=\"Dashboard\" method=\"post\">");
+
+			pageContext.getOut().println("<input type=\"text\" value=\"" + search + "\" name=\"search\" hidden=\"true\" />");
 			pageContext.getOut().println("<button name=\"nbB\" type=\"submit\" value=\"10\" class=\"btn btn-default\" >10</button>");
 			pageContext.getOut().println("<button name=\"nbB\" type=\"submit\" value=\"50\" class=\"btn btn-default\" >50</button>");
 			pageContext.getOut().println("<button name=\"nbB\" type=\"submit\" value=\"100\" class=\"btn btn-default\" >100</button>");
@@ -104,6 +108,20 @@ public class Pagination extends TagSupport {
 	 */
 	public void setOffset(String offset) {
 		this.offset = offset;
+	}
+
+	/**
+	 * @return the search
+	 */
+	public String getSearch() {
+		return search;
+	}
+
+	/**
+	 * @param search the search to set
+	 */
+	public void setSearch(String search) {
+		this.search = search;
 	}
 
 }

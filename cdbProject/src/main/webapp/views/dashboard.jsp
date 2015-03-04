@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.*"%>
-<%@ taglib uri="/WEB-INF/page.tld" prefix="page"%>
+
+<%@ taglib tagdir="/WEB-INF/tags/" prefix="page" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
@@ -90,9 +92,9 @@
 		</div>
 	</section>
 
-	<footer class="navbar-fixed-bottom">
-		<page:pagination page="${page}" offset="${offset}" max="${max}" />
-	</footer>
+	
+	<page:page page="${pagination}" />
+	
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>

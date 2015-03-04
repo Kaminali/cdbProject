@@ -42,20 +42,16 @@ public class AddComputer extends HttpServlet {
 
 		List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
 
-		long id = (request.getParameter("id") != null) ? Long.valueOf(request
-				.getParameter("id")) : -1l;
+		long id = (request.getParameter("computerId") != null) ? Long.valueOf(request.getParameter("computerId"))
+				: (request.getParameter("id") != null) ? Long.valueOf(request.getParameter("id"))  : -1l;
 
-		request.setAttribute("computerEdit",
-				MapComputerDTO.ModelToDto(computerServices.getComputerById(id)));
+		request.setAttribute("computerEdit", null);
+		request.setAttribute("computerEdit", MapComputerDTO.ModelToDto(computerServices.getComputerById(id)));
 
 		request.setAttribute("companyL", companyList);
-		request.setAttribute(
-				"result",
-				(request.getAttribute("result") != null) ? request
-						.getAttribute("result") : "");
+		request.setAttribute("result", (request.getAttribute("result") != null) ? request.getAttribute("result") : "");
 
-		getServletContext().getRequestDispatcher("/views/addComputer.jsp")
-				.forward(request, response);
+		getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
 
 	/**
@@ -76,9 +72,9 @@ public class AddComputer extends HttpServlet {
 			try {
 				if (request.getParameter("computerId") != null) {
 					computerDto.setId(Long.valueOf(request.getParameter("computerId")));
-					computerServices.updateComputer(computerDto);
+					computerServices.updateComputer(MapComputerDTO.DtoToModel(computerDto));
 				} else {
-					computerServices.insertComputer(computerDto);
+					computerServices.insertComputer(MapComputerDTO.DtoToModel(computerDto));
 				}
 				result = "succes";
 			} catch (Exception e) {

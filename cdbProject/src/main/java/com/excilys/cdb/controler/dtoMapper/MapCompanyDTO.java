@@ -35,20 +35,16 @@ public final class MapCompanyDTO {
 
 	public static Company DtoToModel(CompanyDTO companyDto) {
 		Company company = new Company();
-		company.setId(companyDto.getId());
-		if (companyDto.getId() != null && companyDto.getId() != -1 && (companyDto.getName() == null || companyDto.getName() == "")) {
-			CompanyDAO companyDAO = new CompanyDAO(ConnectionManager.instance);
-			company = companyDAO.getById(companyDto.getId());
-		} else {
-			company.setName(companyDto.getName());
-		}
+		company.setId(companyDto.getId());company.setName(companyDto.getName());
 		return company;
 	}
 
 	public static CompanyDTO ModelToDto(Company company) {
 		CompanyDTO companyDto = new CompanyDTO();
-		companyDto.setId(company.getId());
-		companyDto.setName((company.getName() != null) ? company.getName() : "");
+		if (company != null) {
+			companyDto.setId((company.getId() != null) ? company.getId() : null);
+			companyDto.setName((company.getName() != null) ? company.getName() : "");
+		}
 		return companyDto;
 	}
 

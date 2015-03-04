@@ -45,7 +45,9 @@ public class TerminalUI {
 		menu.append(newLine);
 		menu.append("6 : supprimer un ordinateur");
 		menu.append(newLine);
-		menu.append("7 : quitter l'application");
+		menu.append("7 : supprimer une entreprise");
+		menu.append(newLine);
+		menu.append("8 : quitter l'application");
 		menu.append(newLine);
 
 		demande = 0;
@@ -59,14 +61,14 @@ public class TerminalUI {
 
 	public void launchUI() {
 
-		while (demande != 7) {
+		while (demande != 8) {
 
 			System.out.println(menu);
 
 			try {
 				demande = Integer.parseInt(sc.nextLine());
 			} catch (Exception e) {
-				demande = 8;
+				demande = 9999;
 			}
 
 			switch (demande) {
@@ -89,17 +91,20 @@ public class TerminalUI {
 			case 6:
 				removeComputer();
 				break;
+			case 7:
+				removeCompany();
+				break;
 			}
 
 			System.out.println("");
 
-			if (demande != 7 && demande != 8) {
+			if (demande != 8 && demande != 9999) {
 				System.out
 						.println("Appuyer sur n'importe quelle touche pour revenir au menu");
 				sc.nextLine();
 			}
 
-			if (demande == 8) {
+			if (demande == 9999) {
 				System.out.println("Erreur de saisie");
 				sc.nextLine();
 			}
@@ -121,7 +126,7 @@ public class TerminalUI {
 			id = Long.parseLong(sc.nextLine());
 
 		} catch (Exception e) {
-			demande = 8;
+			demande = 9999;
 		}
 
 		try {
@@ -176,7 +181,7 @@ public class TerminalUI {
 			CompanyDTO companyDto = new CompanyDTO();
 			companyDto.setId(idCompany);
 			computerDto.setCompanyDto(companyDto);
-			computerServices.insertComputer(computerDto);
+			computerServices.insertComputer(MapComputerDTO.DtoToModel(computerDto));
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -234,7 +239,7 @@ public class TerminalUI {
 			CompanyDTO companyDto = new CompanyDTO();
 			companyDto.setId(idCompany);
 			computerDto.setCompanyDto(companyDto);
-			computerServices.updateComputer(computerDto);
+			computerServices.updateComputer(MapComputerDTO.DtoToModel(computerDto));
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -260,6 +265,33 @@ public class TerminalUI {
 
 		try {
 			computerServices.deleteComputer(id);
+			System.out.println("Réussite de l'opération");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+
+	}
+	
+	private void removeCompany()  {
+		System.out.println("Taper l'id de l'entreprise");
+		Long id;
+
+		try {
+			id = Long.parseLong(sc.nextLine());
+		} catch (Exception e) {
+			id = null;
+		}
+
+		try {
+			CheckValues.checkCompany(id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		try {
+			System.out.println(id);
+			companyServices.deleteCompany(id);
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
 			// e.printStackTrace();

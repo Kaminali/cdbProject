@@ -16,7 +16,7 @@ public class CheckValues {
 	}
 
 	public static void checkCompany(Long idCompany) throws Exception {
-		CompanyDAO companyDAO = new CompanyDAO(ConnectionManager.instance);
+		CompanyDAO companyDAO = new CompanyDAO(ConnectionManager.instance.getConnection(), true);
 		Company company = companyDAO.getById(idCompany);
 		if (company.getId() == -1l) {
 			throw new Exception("ID de company incorrecte");
@@ -24,7 +24,7 @@ public class CheckValues {
 	}
 
 	public static void checkComputer(Long idComputer) throws Exception {
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance);
+		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
 		Computer computer = computerDAO.getById(idComputer);
 		if (computer.getId() == -1l) {
 			throw new Exception("ID d'ordinateur incorrecte");

@@ -3,13 +3,13 @@
  */
 package com.excilys.cdb.model.dao;
 
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.mapper.MapComputer;
 
@@ -19,8 +19,8 @@ import com.excilys.cdb.model.mapper.MapComputer;
  */
 public class ComputerDAO extends BaseDAO {
 
-	public ComputerDAO(ConnectionManager connectionManager) {
-		super(connectionManager);
+	public ComputerDAO(Connection connection, boolean autoClose) {
+		super(connection, autoClose);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -111,7 +111,7 @@ public class ComputerDAO extends BaseDAO {
 	}
 
 	@Override
-	public boolean insert(Object computerO) {
+	public boolean insert(Object computerO) throws Exception {
 		try {
 			Computer computer = (Computer) computerO;
 			initStatement();
@@ -136,9 +136,14 @@ public class ComputerDAO extends BaseDAO {
 			}
 
 			statement.executeUpdate();
-
 		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+			if(!autoClose) {
+				throw new Exception(e.getMessage());
+			}
+			else {
+				e.printStackTrace();
+				return false;
+			}
 		} finally {
 			close();
 		}
@@ -146,7 +151,7 @@ public class ComputerDAO extends BaseDAO {
 	}
 
 	@Override
-	public boolean update(Object computerO) {
+	public boolean update(Object computerO) throws Exception {
 		try {
 			Computer computer = (Computer) computerO;
 			initStatement();
@@ -154,10 +159,18 @@ public class ComputerDAO extends BaseDAO {
 					.prepareStatement("UPDATE computer SET name = ? , introduced = ? , discontinued = ? ,company_id = ? WHERE id = ? ;");
 
 			statement.setString(1, computer.getName());
-			statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.of(computer.getIntroduced(), LocalTime.of(0, 0))));
-			statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.of(computer.getDiscontinued(), LocalTime.of(0, 0))));
+			statement.setTimestamp(2,  (computer.getIntroduced() != null) ? 
+					Timestamp.valueOf(LocalDateTime.of(computer.getIntroduced(), LocalTime.of(0, 0)))
+					: null);
+			statement.setTimestamp(3,   (computer.getDiscontinued() != null) ? 
+					Timestamp.valueOf(LocalDateTime.of(computer.getDiscontinued(), LocalTime.of(0, 0)))
+					: null);
 			if (computer.getCompany() != null) {
-				statement.setLong(4, computer.getCompany().getId());
+				if (computer.getCompany().getId() > 0) {
+					statement.setLong(4, computer.getCompany().getId());
+				} else {
+					statement.setNull(4, -1);
+				}
 			} else {
 				statement.setNull(4, -1);
 			}
@@ -166,8 +179,13 @@ public class ComputerDAO extends BaseDAO {
 			statement.executeUpdate();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+			if(!autoClose) {
+				throw new Exception(e.getMessage());
+			}
+			else {
+				e.printStackTrace();
+				return false;
+			}
 		} finally {
 			close();
 		}
@@ -175,7 +193,7 @@ public class ComputerDAO extends BaseDAO {
 	}
 
 	@Override
-	public boolean delete(Object computerO) {
+	public boolean delete(Object computerO) throws Exception {
 		try {
 			Computer computer = (Computer) computerO;
 			initStatement();
@@ -187,8 +205,13 @@ public class ComputerDAO extends BaseDAO {
 			statement.executeUpdate();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+			if(!autoClose) {
+				throw new Exception(e.getMessage());
+			}
+			else {
+				e.printStackTrace();
+				return false;
+			}
 		} finally {
 			close();
 		}
@@ -217,4 +240,116 @@ public class ComputerDAO extends BaseDAO {
 
 	}
 
+	public List<Computer> getByName(String name, long begin, long nb) {
+
+		List<Computer> listC = new ArrayList<Computer>();
+
+		try {
+			initStatement();
+			statement = connection
+					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
+							+ " LEFT JOIN company "
+							+ " ON computer.company_id = company.id "
+							+ " WHERE computer.name LIKE ? OR company.name LIKE ? "
+							+ " LIMIT ? OFFSET ?;");
+			statement.setLong(3, nb);
+			statement.setLong(4, begin);
+			statement.setString(1, "%" + name + "%");
+			statement.setString(2, "%" + name + "%");
+			result = statement.executeQuery();
+			while (result.next()) {
+
+				Computer computer = MapComputer.mapping(result);
+				listC.add(computer);
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			close();
+		}
+
+		return listC;
+	}
+
+	public List<Computer> getByName(String name) {
+
+		List<Computer> listC = new ArrayList<Computer>();
+
+		try {
+			initStatement();
+			statement = connection
+					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
+							+" LEFT JOIN company "
+							+" ON computer.company_id = company.id "
+							+ " WHERE computer.name LIKE ? OR company.name LIKE ? ;");
+			statement.setString(1, "%" + name + "%");
+			statement.setString(2, "%" + name + "%");
+			result = statement.executeQuery();
+			while (result.next()) {
+
+				Computer computer = MapComputer.mapping(result);
+				listC.add(computer);
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			close();
+		}
+
+		return listC;
+	}
+
+	public int getNb(String name)  {
+		int test = 0;
+		try {
+			initStatement();
+			statement = connection
+					.prepareStatement("SELECT COUNT(computer.id) FROM computer "
+							+" LEFT JOIN company "
+							+" ON computer.company_id = company.id "
+							+ " WHERE computer.name LIKE ? OR company.name LIKE ? ;");
+			statement.setString(1, "%" + name + "%");
+			statement.setString(2, "%" + name + "%");
+			result = statement.executeQuery();
+			while (result.next()) {
+				test = result.getInt(1);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+
+		return test;
+
+	}
+
+	public List<Long> getIdsByCompany(Long id) {
+		ArrayList<Long> ids = new ArrayList<Long>();
+		try {
+			initStatement();
+			statement = connection
+					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
+							+" LEFT JOIN company "
+							+" ON computer.company_id = company.id "
+							+ "WHERE company.id = ?;");
+			statement.setLong(1, id);
+			result = statement.executeQuery();
+			while (result.next()) {
+				ids.add(result.getLong(1));
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			close();
+		}
+
+		return ids;
+		// TODO Auto-generated method stub
+	}
+	
 }

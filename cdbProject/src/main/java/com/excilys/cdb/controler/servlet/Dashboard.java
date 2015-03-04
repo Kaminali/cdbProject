@@ -4,6 +4,7 @@
 package com.excilys.cdb.controler.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.services.ComputerServices;
+import com.excilys.cdb.view.Page;
 
 /**
  * @author excilys
@@ -38,18 +40,53 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 			HttpServletResponse response) throws ServletException, IOException {
 		ComputerServices computerServices = new ComputerServices();
 
+		
+		if(request.getParameter("selection") != null) {
+			String[] computers = request.getParameter("selection").split(",");
+			ArrayList<Long> computersId = new ArrayList<Long>();
+			for(String computer : computers) {
+				computersId.add(Long.valueOf(computer));
+			}
+			computerServices.deleteComputer(computersId);
+		}
+		
 		long p = (request.getParameter("p") != null) ? Long.valueOf(request.getParameter("p")) : 1l;
 		long nb = (request.getParameter("nb") != null) ? Long.valueOf(request.getParameter("nb")) : 10l;
 		nb = (request.getParameter("nbB") != null) ? Long.valueOf(request.getParameter("nbB")) : nb;
 		p = (request.getParameter("nbB") != null) ? 1l : p;
 		
-		List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer((p-1)*nb, nb));
+		Page page = new Page();
+		
+		page.setPage(p);
+		page.setNbElementPage(nb);
+		
+		List<ComputerDTO> computerList;
+		if(request.getParameter("search") != null || request.getAttribute("searchC") != null) {
+			computerList = (request.getParameter("search") != null) ? 
+					MapComputerDTO.ModelToDto(computerServices.getByName(request.getParameter("search") , (p-1)*nb, nb))
+					:  MapComputerDTO.ModelToDto(computerServices.getByName(String.valueOf(request.getAttribute("searchC")) , (p-1)*nb, nb));
+			request.setAttribute("searchC", (request.getParameter("search") != null) ? 
+					"&search="+request.getParameter("search")
+					: "&search="+request.getAttribute("searchC"));
+			//request.setAttribute("max", computerServices.getNb(request.getParameter("search")));
+			page.setNbElement(computerServices.getNb(request.getParameter("search")));
+			page.setSearch((request.getParameter("search") != null) ? 
+					request.getParameter("search") 
+					: (String) request.getAttribute("searchC"));
+		}
+		else {
+			computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer((p-1)*nb, nb));
+			request.setAttribute("searchC", "");
+			page.setNbElement(computerServices.getNb(request.getParameter("search")));
+		}
 		request.setAttribute("resultatC", computerList);
-		request.setAttribute("page", p);
-		request.setAttribute("offset", nb);
-		request.setAttribute("max", computerServices.getNb());
+		System.out.println(page.getPage());
+		page.setNbChoice(3);
+		request.setAttribute("pagination", page);
 
 		getServletContext().getRequestDispatcher("/views/dashboard.jsp")
 				.forward(request, response);
+
+		
 	}
 }

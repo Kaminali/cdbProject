@@ -24,8 +24,6 @@ public class Page {
 
 	public void setNbElement(long nbElement) {
 		this.nbElement = nbElement;
-		System.out.println(this.nbElement);
-		System.out.println(this.nbElementPage);
 		if (this.nbElementPage != 0) {
 			this.nbpage = 1 + (this.nbElement / this.nbElementPage);
 		}
@@ -37,8 +35,6 @@ public class Page {
 
 	public void setNbElementPage(long nbElementPage) {
 		this.nbElementPage = nbElementPage;
-		System.out.println(this.nbElement + "/" );
-		System.out.println(this.nbElementPage);
 		if (this.nbElementPage != 0) {
 			this.nbpage = 1 + (this.nbElement / this.nbElementPage);
 		}

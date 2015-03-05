@@ -79,7 +79,6 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 			page.setNbElement(computerServices.getNb());
 		}
 		request.setAttribute("resultatC", computerList);
-		System.out.println(page.getPage());
 		page.setNbChoice(3);
 		request.setAttribute("pagination", page);
 

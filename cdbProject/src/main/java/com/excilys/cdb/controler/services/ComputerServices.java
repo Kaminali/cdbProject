@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.controler.connection.ConnectionManager;
-import com.excilys.cdb.controler.validate.CheckValues;
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.dao.ComputerDAO;
 
@@ -17,79 +16,135 @@ import com.excilys.cdb.model.dao.ComputerDAO;
  * @author excilys
  *
  */
-public class ComputerServices {
+public class ComputerServices implements IComputerServices {
 
+	
+	private ComputerDAO computerDAO;
+	private Connection connection;
+
+	private void openConnection() {
+		connection = ConnectionManager.instance.getConnection();
+		computerDAO = ComputerDAO.instance;
+	}
+	
+	private void closeConnection() {
+		try {
+			connection.setAutoCommit(true);
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
 	public List<Computer> getAllComputer(long begin, long nb) {
 		List<Computer> computerList;
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
+		openConnection();
 		if (begin == -1 || nb == -1) {
-			computerList = computerDAO.getList();
+			computerList = computerDAO.getList(connection);
 		} else {
-			computerList = computerDAO.getList(begin, nb);
+			computerList = computerDAO.getList(connection, begin, nb);
 		}
-
+		closeConnection();
 		return computerList;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.controler.services.IComputerServices#getComputerById(long)
+	 */
+	@Override
 	public Computer getComputerById(long id) {
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
-		Computer computer = computerDAO.getById(id);
+		openConnection();
+		Computer computer = computerDAO.getById(connection, id);
+		closeConnection();
 		return computer;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.controler.services.IComputerServices#insertComputer(com.excilys.cdb.model.bean.Computer)
+	 */
+	@Override
 	public void insertComputer(Computer computer) throws Exception {
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
-		computerDAO.insert(computer);
+		openConnection();
+		computerDAO.insert(connection, computer);
+		closeConnection();
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.controler.services.IComputerServices#updateComputer(com.excilys.cdb.model.bean.Computer)
+	 */
+	@Override
 	public void updateComputer(Computer computer) throws Exception {
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
-		computerDAO.update(computer);
+		openConnection();
+		computerDAO.update(connection, computer);
+		closeConnection();
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.controler.services.IComputerServices#deleteComputer(java.lang.Long)
+	 */
+	@Override
 	public void deleteComputer(Long id) throws Exception {
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
-		CheckValues.checkComputer(id);
+		openConnection();
 		Computer computer = new Computer();
 		computer.setId(id);
-		computerDAO.delete(computer);
+		computerDAO.delete(connection, computer);
+		closeConnection();
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.controler.services.IComputerServices#getNb()
+	 */
+	@Override
 	public int getNb() {
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
-		return computerDAO.getNb();
+		openConnection();
+		int temp = computerDAO.getNb(connection);
+		closeConnection();
+		return temp;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.controler.services.IComputerServices#getByName(java.lang.String, long, long)
+	 */
+	@Override
 	public List<Computer> getByName(String name, long begin, long nb) {
 		List<Computer> computerList;
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
+		openConnection();
 		if (begin == -1 || nb == -1) {
-			computerList = computerDAO.getByName(name);
+			computerList = computerDAO.getByName(connection, name);
 		} else {
-			computerList = computerDAO.getByName(name, begin, nb);
+			computerList = computerDAO.getByName(connection, name, begin, nb);
 		}
-
+		closeConnection();
 		return computerList;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.controler.services.IComputerServices#getNb(java.lang.String)
+	 */
+	@Override
 	public int getNb(String name) {
-		ComputerDAO computerDAO = new ComputerDAO(ConnectionManager.instance.getConnection(), true);
-		return computerDAO.getNb(name);
+		openConnection();
+		int temp = computerDAO.getNb(connection, name);
+		closeConnection();
+		return temp;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.controler.services.IComputerServices#deleteComputer(java.util.ArrayList)
+	 */
+	@Override
 	public void deleteComputer(ArrayList<Long> computersId) {
-		Connection connection = ConnectionManager.instance.getConnection();
-		ComputerDAO computerDAO = new ComputerDAO(connection, false);
+		openConnection();
 		try {
 			connection.setAutoCommit(false);
 			for(long id : computersId) {
-				CheckValues.checkComputer(id);
 				Computer computer = new Computer();
 				computer.setId(id);
-				computerDAO.delete(computer);
+				computerDAO.delete(connection, computer);
 			}
 			connection.commit();
 		} catch(Exception e) {
@@ -100,13 +155,7 @@ public class ComputerServices {
 				throw new Error();
 			}
 		} finally {
-			try {
-				connection.setAutoCommit(true);
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new Error();
-			}
+			closeConnection();
 		}
 	}
 

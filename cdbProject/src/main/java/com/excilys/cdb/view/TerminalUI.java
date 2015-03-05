@@ -12,15 +12,16 @@ import com.excilys.cdb.controler.dtoMapper.MapCompanyDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.services.ComputerServices;
 import com.excilys.cdb.controler.services.CompanyServices;
-import com.excilys.cdb.controler.validate.CheckValues;
+import com.excilys.cdb.controler.services.ICompanyServices;
+import com.excilys.cdb.controler.services.IComputerServices;
 /**
  * @author excilys
  *
  */
 public class TerminalUI {
 
-	private ComputerServices computerServices;
-	private CompanyServices companyServices;
+	private IComputerServices computerServices;
+	private ICompanyServices companyServices;
 	private StringBuffer menu;
 	private String newLine;
 	private int demande;
@@ -130,7 +131,6 @@ public class TerminalUI {
 		}
 
 		try {
-			CheckValues.checkComputer(id);
 			ComputerDTO computer = MapComputerDTO.ModelToDto(computerServices.getComputerById(id));
 			System.out.println(computer.toString());
 		} catch (Exception e) {
@@ -202,13 +202,6 @@ public class TerminalUI {
 		} catch (Exception e) {
 			id = null;
 		}
-
-		try {
-			CheckValues.checkComputer(id);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
 		System.out.println("Taper le nom de l'ordinateur (obligatoire)");
 		name = sc.nextLine();
 
@@ -233,6 +226,7 @@ public class TerminalUI {
 
 		try {
 			ComputerDTO computerDto = new ComputerDTO();
+			computerDto.setId(id);
 			computerDto.setName(name);
 			computerDto.setIntroduced(introduced);
 			computerDto.setDiscontinued(discontinued);
@@ -258,12 +252,6 @@ public class TerminalUI {
 		}
 
 		try {
-			CheckValues.checkComputer(id);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		try {
 			computerServices.deleteComputer(id);
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
@@ -281,12 +269,6 @@ public class TerminalUI {
 			id = Long.parseLong(sc.nextLine());
 		} catch (Exception e) {
 			id = null;
-		}
-
-		try {
-			CheckValues.checkCompany(id);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 
 		try {

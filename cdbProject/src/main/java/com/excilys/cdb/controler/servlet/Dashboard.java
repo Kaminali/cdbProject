@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.services.ComputerServices;
+import com.excilys.cdb.controler.services.IComputerServices;
 import com.excilys.cdb.view.Page;
 
 /**
@@ -38,7 +39,7 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		ComputerServices computerServices = new ComputerServices();
+		IComputerServices computerServices = new ComputerServices();
 
 		
 		if(request.getParameter("selection") != null) {

@@ -4,6 +4,9 @@
 package com.excilys.cdb.model.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,20 +16,17 @@ import com.excilys.cdb.model.bean.Company;
  * @author Nicolas Guibert
  *
  */
-public class CompanyDAO extends BaseDAO {
+public enum CompanyDAO implements ICompanyDAO {
 
-	public CompanyDAO(Connection connection, boolean autoClose) {
-		super(connection, autoClose);
-	}
-
-	@SuppressWarnings("unchecked")
+	instance;
+	
 	@Override
-	public List<Company> getList() {
-
+	public List<Company> getList(Connection connection) {
+		ResultSet result = null;
+		PreparedStatement statement = null;
 		List<Company> listC = new ArrayList<Company>();
 
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT id, name FROM company;");
 			result = statement.executeQuery();
@@ -40,22 +40,26 @@ public class CompanyDAO extends BaseDAO {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
 		} finally {
-			close();
+			try {
+					result.close();
+					statement.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e.getMessage());
+			}
 		}
 
 		return listC;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Company getById(Long id) {
-
+	public Company getById(Connection connection, Long id) {
+		ResultSet result = null;
+		PreparedStatement statement = null;
 		Company company = new Company();
 		company.setId(-1l);
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT id, name FROM company WHERE id = ?;");
 			statement.setLong(1, id);
@@ -68,17 +72,21 @@ public class CompanyDAO extends BaseDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+		try {
+				result.close();
+				statement.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e.getMessage());
+			}
 		}
 
 		return company;
 	}
-	
+
 	@Override
-	public boolean delete(Object companyO) throws Exception {
+	public boolean delete(Connection connection, Company company) throws Exception {
+		PreparedStatement statement = null;
 		try {
-			Company company = (Company) companyO;
-			initStatement();
 			statement = connection
 					.prepareStatement("DELETE FROM company WHERE id = ? ;");
 
@@ -87,18 +95,15 @@ public class CompanyDAO extends BaseDAO {
 			statement.executeUpdate();
 
 		} catch (Exception e) {
-			if(!autoClose) {
-				throw new Exception(e.getMessage());
-			}
-			else {
-				e.printStackTrace();
-				return false;
-			}
+			throw new Exception(e.getMessage());
 		} finally {
-			close();
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e.getMessage());
+			}
 		}
 		return true;
 	}
-
 
 }

@@ -15,6 +15,8 @@ import com.excilys.cdb.controler.dtoMapper.MapCompanyDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.services.CompanyServices;
 import com.excilys.cdb.controler.services.ComputerServices;
+import com.excilys.cdb.controler.services.ICompanyServices;
+import com.excilys.cdb.controler.services.IComputerServices;
 
 /**
  * Servlet implementation class AddComputer
@@ -37,8 +39,8 @@ public class AddComputer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		CompanyServices companyServices = new CompanyServices();
-		ComputerServices computerServices = new ComputerServices();
+		ICompanyServices companyServices = new CompanyServices();
+		IComputerServices computerServices = new ComputerServices();
 
 		List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
 
@@ -68,7 +70,7 @@ public class AddComputer extends HttpServlet {
 			CompanyDTO companyDto = new CompanyDTO();
 			companyDto.setId(Long.valueOf(request.getParameter("companyId")));
 			computerDto.setCompanyDto(companyDto);
-			ComputerServices computerServices = new ComputerServices();
+			IComputerServices computerServices = new ComputerServices();
 			try {
 				if (request.getParameter("computerId") != null) {
 					computerDto.setId(Long.valueOf(request.getParameter("computerId")));

@@ -4,6 +4,9 @@
 package com.excilys.cdb.model.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,20 +20,18 @@ import com.excilys.cdb.model.mapper.MapComputer;
  * @author excilys
  *
  */
-public class ComputerDAO extends BaseDAO {
+public enum ComputerDAO implements IComputerDAO {
 
-	public ComputerDAO(Connection connection, boolean autoClose) {
-		super(connection, autoClose);
-	}
-
-	@SuppressWarnings("unchecked")
+	instance;
+	
 	@Override
-	public List<Computer> getList() {
+	public List<Computer> getList(Connection connection) {
 
 		List<Computer> listC = new ArrayList<Computer>();
+		ResultSet result = null;
+		PreparedStatement statement = null;
 
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name AS cname FROM computer "
 							+" LEFT JOIN company "
@@ -45,20 +46,28 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			close();
+			try {
+				result.close();
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 
 		return listC;
 	}
 
-	@SuppressWarnings("unchecked")
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#getList(java.lang.Long, java.lang.Long)
+	 */
 	@Override
-	public List<Computer> getList(Long begin, Long nb) {
+	public List<Computer> getList(Connection connection, Long begin, Long nb) {
 
 		List<Computer> listC = new ArrayList<Computer>();
+		ResultSet result = null;
+		PreparedStatement statement = null;
 
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
 							+" LEFT JOIN company "
@@ -76,19 +85,27 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			close();
+			try {
+				result.close();
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 
 		return listC;
 	}
-
-	@SuppressWarnings("unchecked")
+	
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#getById(java.lang.Long)
+	 */
 	@Override
-	public Computer getById(Long id) {
+	public Computer getById(Connection connection, Long id) {
 		Computer computer = new Computer();
 		computer.setId(-1l);
+		ResultSet result = null;
+		PreparedStatement statement = null;
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
 							+" LEFT JOIN company "
@@ -103,18 +120,25 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			close();
+			try {
+				result.close();
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 
 		return computer;
 		// TODO Auto-generated method stub
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#insert(com.excilys.cdb.model.bean.Computer)
+	 */
 	@Override
-	public boolean insert(Object computerO) throws Exception {
+	public boolean insert(Connection connection, Computer computer) throws Exception {
+		PreparedStatement statement = null;
 		try {
-			Computer computer = (Computer) computerO;
-			initStatement();
 			statement = connection
 					.prepareStatement("INSERT into computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?);");
 
@@ -137,24 +161,24 @@ public class ComputerDAO extends BaseDAO {
 
 			statement.executeUpdate();
 		} catch (Exception e) {
-			if(!autoClose) {
 				throw new Exception(e.getMessage());
-			}
-			else {
-				e.printStackTrace();
-				return false;
-			}
 		} finally {
-			close();
+			try {
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#update(com.excilys.cdb.model.bean.Computer)
+	 */
 	@Override
-	public boolean update(Object computerO) throws Exception {
+	public boolean update(Connection connection, Computer computer) throws Exception {
+		PreparedStatement statement = null;
 		try {
-			Computer computer = (Computer) computerO;
-			initStatement();
 			statement = connection
 					.prepareStatement("UPDATE computer SET name = ? , introduced = ? , discontinued = ? ,company_id = ? WHERE id = ? ;");
 
@@ -179,24 +203,24 @@ public class ComputerDAO extends BaseDAO {
 			statement.executeUpdate();
 
 		} catch (Exception e) {
-			if(!autoClose) {
 				throw new Exception(e.getMessage());
-			}
-			else {
-				e.printStackTrace();
-				return false;
-			}
 		} finally {
-			close();
+			try {
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#delete(com.excilys.cdb.model.bean.Computer)
+	 */
 	@Override
-	public boolean delete(Object computerO) throws Exception {
+	public boolean delete(Connection connection, Computer computer) throws Exception {
+		PreparedStatement statement = null;
 		try {
-			Computer computer = (Computer) computerO;
-			initStatement();
 			statement = connection
 					.prepareStatement("DELETE FROM computer WHERE id = ? ;");
 
@@ -205,23 +229,26 @@ public class ComputerDAO extends BaseDAO {
 			statement.executeUpdate();
 
 		} catch (Exception e) {
-			if(!autoClose) {
 				throw new Exception(e.getMessage());
-			}
-			else {
-				e.printStackTrace();
-				return false;
-			}
 		} finally {
-			close();
+			try {
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 		return true;
 	}
 
-	public int getNb() {
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#getNb()
+	 */
+	@Override
+	public int getNb(Connection connection) {
+		ResultSet result = null;
+		PreparedStatement statement = null;
 		int test = 0;
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT COUNT(id) FROM computer;");
 
@@ -233,19 +260,28 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			try {
+				result.close();
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 
 		return test;
 
 	}
 
-	public List<Computer> getByName(String name, long begin, long nb) {
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#getByName(java.lang.String, long, long)
+	 */
+	@Override
+	public List<Computer> getByName(Connection connection, String name, long begin, long nb) {
 
 		List<Computer> listC = new ArrayList<Computer>();
-
+		ResultSet result = null;
+		PreparedStatement statement = null;
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
 							+ " LEFT JOIN company "
@@ -266,18 +302,27 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			close();
+			try {
+				result.close();
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 
 		return listC;
 	}
 
-	public List<Computer> getByName(String name) {
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#getByName(java.lang.String)
+	 */
+	@Override
+	public List<Computer> getByName(Connection connection, String name) {
 
 		List<Computer> listC = new ArrayList<Computer>();
-
+		ResultSet result = null;
+		PreparedStatement statement = null;
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
 							+" LEFT JOIN company "
@@ -295,16 +340,26 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			close();
+			try {
+				result.close();
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 
 		return listC;
 	}
 
-	public int getNb(String name)  {
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#getNb(java.lang.String)
+	 */
+	@Override
+	public int getNb(Connection connection, String name)  {
 		int test = 0;
+		ResultSet result = null;
+		PreparedStatement statement = null;
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT COUNT(computer.id) FROM computer "
 							+" LEFT JOIN company "
@@ -320,17 +375,27 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			try {
+				result.close();
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 
 		return test;
 
 	}
 
-	public List<Long> getIdsByCompany(Long id) {
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.model.dao.IComputerDAO#getIdsByCompany(java.lang.Long)
+	 */
+	@Override
+	public List<Long> getIdsByCompany(Connection connection, Long id) {
 		ArrayList<Long> ids = new ArrayList<Long>();
+		ResultSet result = null;
+		PreparedStatement statement = null;
 		try {
-			initStatement();
 			statement = connection
 					.prepareStatement("SELECT computer.id, computer.name, introduced, discontinued, company_id AS cid, company.name AS cname FROM computer "
 							+" LEFT JOIN company "
@@ -345,7 +410,12 @@ public class ComputerDAO extends BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			close();
+			try {
+				result.close();
+				statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 		}
 
 		return ids;

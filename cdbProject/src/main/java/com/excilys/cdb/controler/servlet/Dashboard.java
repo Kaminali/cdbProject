@@ -68,7 +68,6 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 			request.setAttribute("searchC", (request.getParameter("search") != null) ? 
 					"&search="+request.getParameter("search")
 					: "&search="+request.getAttribute("searchC"));
-			//request.setAttribute("max", computerServices.getNb(request.getParameter("search")));
 			page.setNbElement(computerServices.getNb(request.getParameter("search")));
 			page.setSearch((request.getParameter("search") != null) ? 
 					request.getParameter("search") 
@@ -77,7 +76,7 @@ public class Dashboard extends javax.servlet.http.HttpServlet implements
 		else {
 			computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer((p-1)*nb, nb));
 			request.setAttribute("searchC", "");
-			page.setNbElement(computerServices.getNb(request.getParameter("search")));
+			page.setNbElement(computerServices.getNb());
 		}
 		request.setAttribute("resultatC", computerList);
 		System.out.println(page.getPage());

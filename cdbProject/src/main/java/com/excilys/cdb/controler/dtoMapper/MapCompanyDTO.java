@@ -6,10 +6,8 @@ package com.excilys.cdb.controler.dtoMapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.model.bean.Company;
-import com.excilys.cdb.model.dao.CompanyDAO;
 
 /**
  * @author excilys

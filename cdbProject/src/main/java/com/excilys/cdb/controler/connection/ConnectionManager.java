@@ -23,13 +23,14 @@ public enum ConnectionManager implements IConnectionManager {
 	private final String adminDB;
 	private final String passwDB;
 	private final String driver;
-	
 
-	
+	private static ThreadLocal<Connection> connectionLocal = new ThreadLocal<Connection>();
+
 	private ConnectionManager() {
 		// Chemin du fichier contenant les informations de connexions
-		
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+		ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
 		Properties properties = new Properties();
 		try {
 			classLoader.getResourceAsStream(PROPERTY_CONFIG);
@@ -38,7 +39,7 @@ public enum ConnectionManager implements IConnectionManager {
 			System.out.println("Unable to load config file.");
 			throw new Error("pas de fichier de config ?");
 		}
-		
+
 		chaineConnect = properties.getProperty(PROPERTY_CHAINE_DB);
 		adminDB = properties.getProperty(PROPERTY_USER_NAME);
 		passwDB = properties.getProperty(PROPERTY_USER_PASSW);
@@ -52,30 +53,37 @@ public enum ConnectionManager implements IConnectionManager {
 			System.out.println(e.getMessage());
 			throw new Error("impossible de se connecter");
 		}
-		
+
 		try {
-            BoneCPConfig config = new BoneCPConfig();
-            config.setJdbcUrl(chaineConnect);
-            config.setUsername(adminDB);
-            config.setPassword(passwDB);
-            config.setMinConnectionsPerPartition( 5 );
-            config.setMaxConnectionsPerPartition( 10 );
-            config.setPartitionCount( 2 );
-            connectionPool = new BoneCP( config );
-        } catch ( SQLException e ) {
-            e.printStackTrace();
-        }
+			BoneCPConfig config = new BoneCPConfig();
+			config.setJdbcUrl(chaineConnect);
+			config.setUsername(adminDB);
+			config.setPassword(passwDB);
+			config.setMinConnectionsPerPartition(5);
+			config.setMaxConnectionsPerPartition(10);
+			config.setPartitionCount(2);
+			connectionPool = new BoneCP(config);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public Connection getConnection() {
-        try {
-			return connectionPool.getConnection();
+		Connection connection = null;
+		if (connectionLocal.get() != null) {
+			return connectionLocal.get();
+		}
+		try {
+			connection = connectionPool.getConnection();
+			connection.setAutoCommit(true);
+			connectionLocal.set(connection);
+			return connection;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new Error("impossible de se connecter");
 		}
-    }
+	}
 
 	@Override
 	public void closeAll() throws Exception {

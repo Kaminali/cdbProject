@@ -29,4 +29,5 @@ public interface IComputerDAO {
 
 	public abstract List<Long> getIdsByCompany(Connection connection, Long id);
 
+
 }

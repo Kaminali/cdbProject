@@ -6,6 +6,13 @@ package com.excilys.cdb.view;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
+
 import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.dtoMapper.MapCompanyDTO;
@@ -18,17 +25,21 @@ import com.excilys.cdb.controler.services.IComputerServices;
  * @author excilys
  *
  */
+
+@Controller
 public class TerminalUI {
 
-	private IComputerServices computerServices;
+	//private IComputerServices computerServices;
 	private ICompanyServices companyServices;
 	private StringBuffer menu;
 	private String newLine;
 	private int demande;
 	private Scanner sc;
 
+	@Autowired
+	private IComputerServices computerServices;
+	
 	public TerminalUI() {
-		computerServices = new ComputerServices();
 		companyServices = new CompanyServices();
 
 		newLine = System.getProperty("line.separator");
@@ -75,7 +86,8 @@ public class TerminalUI {
 			switch (demande) {
 
 			case 1:
-				computerList();
+				//computerList();
+				testSpring();
 				break;
 			case 2:
 				computerDetail();
@@ -113,6 +125,12 @@ public class TerminalUI {
 		}
 	}
 
+	private void testSpring() {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring.xml");
+		IComputerServices test = (ComputerServices) context.getBean("computerService");
+		computerServices.getNb();
+	}
+	
 	private void computerList() {
 		List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer(-1l, -1l));
 		for (ComputerDTO computer : computerList) {

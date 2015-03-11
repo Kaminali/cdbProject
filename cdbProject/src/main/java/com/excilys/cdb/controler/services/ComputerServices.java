@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes.Name;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.controler.connection.ConnectionManager;
 import com.excilys.cdb.model.bean.Computer;
@@ -16,15 +20,20 @@ import com.excilys.cdb.model.dao.ComputerDAO;
  * @author excilys
  *
  */
+@Service
 public class ComputerServices implements IComputerServices {
 
-	
+	@Autowired 
 	private ComputerDAO computerDAO;
 	private Connection connection;
 
+	public void testSpring() {
+		computerDAO.testSpring();
+	}
+	
 	private void openConnection() {
 		connection = ConnectionManager.instance.getConnection();
-		computerDAO = ComputerDAO.instance;
+		//computerDAO = ComputerDAO.instance;
 	}
 	
 	private void closeConnection() {

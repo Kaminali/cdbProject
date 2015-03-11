@@ -54,7 +54,7 @@ public class CompanyServices extends ManageTransaction implements ICompanyServic
 	 */
 	@Override
 	public void deleteCompany(Long idCompany) {
-		openConnection();
+		/*openConnection();
 		IComputerDAO computerDAO = ComputerDAO.instance;
 		try {
 			connection.setAutoCommit(false);
@@ -78,7 +78,7 @@ public class CompanyServices extends ManageTransaction implements ICompanyServic
 			}
 		} finally {
 			closeConnection();
-		}
+		}*/
 	}
 	
 }

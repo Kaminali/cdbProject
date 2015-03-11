@@ -13,6 +13,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.mapper.MapComputer;
 
@@ -20,10 +25,13 @@ import com.excilys.cdb.model.mapper.MapComputer;
  * @author excilys
  *
  */
-public enum ComputerDAO implements IComputerDAO {
 
-	instance;
+@Repository
+public class ComputerDAO implements IComputerDAO {
+	//instance;
+
 	
+
 	@Override
 	public List<Computer> getList(Connection connection) {
 
@@ -420,6 +428,11 @@ public enum ComputerDAO implements IComputerDAO {
 
 		return ids;
 		// TODO Auto-generated method stub
+	}
+
+	public void testSpring() {
+		System.out.println("réussite");
+		
 	}
 	
 }

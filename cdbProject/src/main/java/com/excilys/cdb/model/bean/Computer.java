@@ -3,6 +3,7 @@
  */
 package com.excilys.cdb.model.bean;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 
@@ -41,18 +42,26 @@ public class Computer {
 		return introduced;
 	}
 
+	public void setIntroduced(Timestamp introduced) {
+		this.introduced = (introduced != null && introduced.toString() != "0000-00-00 00:00:00") ? introduced.toLocalDateTime().toLocalDate() : null;
+	}
+
 	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
-
+	
 	public LocalDate getDiscontinued() {
 		return discontinued;
+	}
+
+	public void setDiscontinued(Timestamp discontinued) {
+		this.discontinued = (discontinued != null && discontinued.toString() != "0000-00-00 00:00:00") ? discontinued.toLocalDateTime().toLocalDate() : null;
 	}
 
 	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
-
+	
 	@Override
 	public String toString() {
 		String newLine=System.getProperty("line.separator"); 

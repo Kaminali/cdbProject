@@ -1,33 +1,34 @@
 package com.excilys.cdb.model.dao;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.excilys.cdb.model.bean.Computer;
 
 public interface IComputerDAO {
 
-	public abstract List<Computer> getList(Connection connection);
+	public abstract List<Computer> getList();
 
-	public abstract List<Computer> getList(Connection connection, Long begin, Long nb);
+	public abstract List<Computer> getList(Long begin, Long nb);
 
-	public abstract Computer getById(Connection connection, Long id);
+	public abstract Computer getById(Long id);
 
-	public abstract boolean insert(Connection connection, Computer computer) throws Exception;
+	public abstract void insert(Computer computer);
 
-	public abstract boolean update(Connection connection, Computer computer) throws Exception;
+	public abstract void update(Computer computer);
 
-	public abstract boolean delete(Connection connection, Computer computer) throws Exception;
+	public abstract void delete(Computer computer);
 
-	public abstract int getNb(Connection connection);
+	public abstract int getNb();
 
-	public abstract List<Computer> getByName(Connection connection, String name, long begin, long nb);
+	public abstract List<Computer> getByName(String name, long begin, long nb);
 
-	public abstract List<Computer> getByName(Connection connection, String name);
+	public abstract List<Computer> getByName(String name);
 
-	public abstract int getNb(Connection connection, String name);
+	public abstract int getNb(String name);
 
-	public abstract List<Long> getIdsByCompany(Connection connection, Long id);
+	public abstract List<Long> getIdsByCompany(Long id);
+
+	String testSpring();
 
 
 }

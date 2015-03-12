@@ -3,23 +3,18 @@ package com.excilys.cdb.model.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import com.excilys.cdb.model.bean.Company;
 
-public class MapCompany {
+@SuppressWarnings("rawtypes")
+public class MapCompany implements RowMapper {
 	
-	public static Company mapping(ResultSet result) {
+	@Override
+	public Object mapRow(ResultSet result, int rowNum) throws SQLException {
 		Company company = new Company();
-		try {
-			company.setId(new Long(result.getLong("id")));
-		} catch (SQLException e) {
-			company.setId(null);
-		}
-		try {
-			company.setName(result.getString("name"));
-		} catch (SQLException e) {
-			company.setName(null);
-		}
-	
+		company.setId(result.getLong("id"));
+		company.setName(result.getString("name"));
 		return company;
 	}
 }

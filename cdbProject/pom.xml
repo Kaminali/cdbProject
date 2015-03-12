@@ -96,6 +96,11 @@
 			<version>${spring}</version>
 		</dependency>
 		<dependency>
+			<artifactId>spring-jdbc</artifactId>
+			<groupId>org.springframework</groupId>
+			<version>${spring}</version>
+		</dependency>
+		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-webmvc</artifactId>
 		    <version>${spring}</version>
@@ -113,7 +118,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
-			<version>4.1.4.RELEASE</version>
+			<version>${spring}</version>
 		</dependency>
 	</dependencies>
 	<build>

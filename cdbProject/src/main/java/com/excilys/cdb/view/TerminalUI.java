@@ -6,18 +6,13 @@ package com.excilys.cdb.view;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.dtoMapper.MapCompanyDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
-import com.excilys.cdb.controler.services.ComputerServices;
 import com.excilys.cdb.controler.services.CompanyServices;
 import com.excilys.cdb.controler.services.ICompanyServices;
 import com.excilys.cdb.controler.services.IComputerServices;
@@ -86,8 +81,8 @@ public class TerminalUI {
 			switch (demande) {
 
 			case 1:
-				//computerList();
 				testSpring();
+				computerList();
 				break;
 			case 2:
 				computerDetail();
@@ -126,9 +121,9 @@ public class TerminalUI {
 	}
 
 	private void testSpring() {
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring.xml");
-		IComputerServices test = (ComputerServices) context.getBean("computerService");
-		computerServices.getNb();
+		//ApplicationContext context = new ClassPathXmlApplicationContext("Spring.xml");
+		//IComputerServices test = (ComputerServices) context.getBean("computerService");
+		//computerServices.getNb();
 	}
 	
 	private void computerList() {

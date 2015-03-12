@@ -3,107 +3,68 @@
  */
 package com.excilys.cdb.model.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.bean.Company;
+import com.excilys.cdb.model.mapper.MapCompany;
 
 /**
  * @author Nicolas Guibert
  *
  */
-public enum CompanyDAO implements ICompanyDAO {
 
-	instance;
+@Repository
+public class CompanyDAO extends JdbcDaoSupport implements ICompanyDAO {
 	
+	@Autowired
+	private DataSource dataSource;
+ 
+	@PostConstruct
+	private void initialize() {
+		setDataSource(dataSource);
+	}
+	
+	@SuppressWarnings("rawtypes")
 	@Override
-	public List<Company> getList(Connection connection) {
-		ResultSet result = null;
-		PreparedStatement statement = null;
+	public List<Company> getList() {
 		List<Company> listC = new ArrayList<Company>();
-
-		try {
-			statement = connection
-					.prepareStatement("SELECT id, name FROM company;");
-			result = statement.executeQuery();
-			while (result.next()) {
-
-				Company company = new Company();
-				company.setId(new Long(result.getLong(1)));
-				company.setName(result.getString(2));
-
-				listC.add(company);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-					result.close();
-					statement.close();
-			} catch (SQLException e) {
-				throw new RuntimeException(e.getMessage());
-			}
+		String sql = "SELECT id, name FROM company;";
+				
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
+		for (Map row : rows) {
+			Company company = new Company();
+			
+			company.setId((Long)(row.get("id")));
+			company.setName((String)row.get("name"));
+			listC.add(company);
 		}
-
 		return listC;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Company getById(Connection connection, Long id) {
-		ResultSet result = null;
-		PreparedStatement statement = null;
-		Company company = new Company();
-		company.setId(-1l);
-		try {
-			statement = connection
-					.prepareStatement("SELECT id, name FROM company WHERE id = ?;");
-			statement.setLong(1, id);
-			result = statement.executeQuery();
-			while (result.next()) {
-				company.setId(new Long(result.getLong(1)));
-				company.setName(result.getString(2));
-			}
+	public Company getById(Long id) {
+		String sql = "SELECT id, name FROM company WHERE id = ?;";
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-		try {
-				result.close();
-				statement.close();
-			} catch (SQLException e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
+		Company company = (Company) getJdbcTemplate().queryForObject(sql, new MapCompany());
 
 		return company;
 	}
 
 	@Override
-	public boolean delete(Connection connection, Company company) throws Exception {
-		PreparedStatement statement = null;
-		try {
-			statement = connection
-					.prepareStatement("DELETE FROM company WHERE id = ? ;");
+	public void delete(Company company) {
+		String sql = "DELETE FROM company WHERE id = ? ;";
 
-			statement.setLong(1, company.getId());
-
-			statement.executeUpdate();
-
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		} finally {
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
-		return true;
+		getJdbcTemplate().update(sql, new Object[] { company.getId() }); 
 	}
 
 }

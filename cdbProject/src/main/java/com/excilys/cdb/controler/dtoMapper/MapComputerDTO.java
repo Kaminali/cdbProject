@@ -34,12 +34,12 @@ public final class MapComputerDTO {
 		try {
 			computer.setIntroduced(LocalDate.parse(computerDto.getIntroduced()));
 		} catch (Exception e) {
-			computer.setIntroduced(null);
+			//computer.setIntroduced(null);
 		}
 		try {
 			computer.setDiscontinued(LocalDate.parse(computerDto.getDiscontinued()));
 		} catch (Exception e) {
-			computer.setDiscontinued(null);
+			//computer.setDiscontinued(null);
 		}
 
 		computer.setCompany(MapCompanyDTO.DtoToModel(computerDto

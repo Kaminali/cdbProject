@@ -16,7 +16,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="Dashboard"> Application -
+			<a class="navbar-brand" href="dashboard"> Application -
 				Computer Database </a>
 		</div>
 	</header>
@@ -31,7 +31,7 @@
 					<c:if test="${not empty computerEdit}">
 						<h1>Edit Computer</h1>
 					</c:if>
-					<form action="AddComputer" method="POST">
+					<form action="addComputer" method="POST">
 						<fieldset>
 						<c:if test="${not empty computerEdit}">
 							<input type="text" hidden="true" name="computerId" id="computerId" value="${computerEdit.getId()}">
@@ -96,7 +96,7 @@
 							<c:if test="${not empty computerEdit}">
 								<input type="submit" value="Edit" class="btn btn-primary">
 							</c:if>
-							or <a href="Dashboard" class="btn btn-default">Cancel</a>
+							or <a href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 					<c:out value="${result}" />

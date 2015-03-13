@@ -2,6 +2,8 @@ package com.excilys.cdb.controler.servlet;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,7 +37,6 @@ public class AddComputer  {
     		) {
 
 		operation(pModel, id, idComputer, result);
-		
         return "addComputer";
     
     }

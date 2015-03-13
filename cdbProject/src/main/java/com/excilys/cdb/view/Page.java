@@ -1,5 +1,10 @@
 package com.excilys.cdb.view;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("session")
 public class Page {
 
 	private long page;
@@ -7,8 +12,9 @@ public class Page {
 	private long nbElementPage;
 	private long nbpage;
 	private String search;
-	private long order;
+	private boolean order;
 	private long nbChoice;
+	private int orderCol;
 
 	public long getPage() {
 		return page;
@@ -52,11 +58,11 @@ public class Page {
 		this.search = search;
 	}
 
-	public long getOrder() {
+	public boolean getOrder() {
 		return order;
 	}
 
-	public void setOrder(long order) {
+	public void setOrder(boolean order) {
 		this.order = order;
 	}
 
@@ -66,6 +72,19 @@ public class Page {
 
 	public void setNbChoice(long nbChoice) {
 		this.nbChoice = nbChoice;
+	}
+
+	public void setOrderCol(int orderCol) {
+		this.orderCol = orderCol;
+	}
+	
+	public int getOrderCol() {
+		return this.orderCol;
+	}
+	
+	@Override
+	public String toString(){
+		return "page : " + page + " nb : " + nbElement + " nbPpage : " + nbElementPage;
 	}
 
 }

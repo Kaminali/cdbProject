@@ -171,7 +171,7 @@ public class ComputerDAO extends JdbcDaoSupport implements IComputerDAO {
 							+ " WHERE computer.name LIKE ? OR company.name LIKE ? "
 							+ " LIMIT ? OFFSET ?;";
 		
-		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql, new Object[] { name, name, nb, begin });
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql, new Object[] { "%" + name + "%", "%" + name + "%", nb, begin });
 		for ( Map row : rows) {
 			Computer computer = new Computer();
 			
@@ -201,7 +201,7 @@ public class ComputerDAO extends JdbcDaoSupport implements IComputerDAO {
 							+ " ON computer.company_id = company.id "
 							+ " WHERE computer.name LIKE ? OR company.name LIKE ? ;";
 		
-		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql, new Object[] { name, name });
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql, new Object[] { "%" + name + "%", "%" + name + "%" });
 		for (Map row : rows) {
 			Computer computer = new Computer();
 			

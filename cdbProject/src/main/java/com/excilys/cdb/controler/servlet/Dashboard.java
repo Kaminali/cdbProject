@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.excilys.cdb.controler.servlet;
 
 import java.util.ArrayList;

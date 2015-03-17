@@ -31,21 +31,7 @@
 	    </property>
 	</bean>
     
-	<bean id="transactionManager"
-	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-  		<property name="dataSource" ref="dataSource" />
-	</bean>
-
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
- 
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" />
-		<property name="username" value="admincdb" /> 
-		<property name="password" value="qwerty1234" />
-	</bean>
-	
-    <context:component-scan base-package="com.excilys.cdb" />
+	<import resource="classpath*:/application_contexte.xml" />
 
     <bean
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">

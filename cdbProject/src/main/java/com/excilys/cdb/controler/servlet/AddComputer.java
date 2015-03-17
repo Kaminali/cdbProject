@@ -27,6 +27,7 @@ public class AddComputer  {
 	@Autowired
 	private ICompanyServices companyServices;
 
+	
     @RequestMapping(method = RequestMethod.GET)
     public String loadPage(final ModelMap pModel,  
     		@RequestParam(value="id", defaultValue="-1") long id,
@@ -83,62 +84,12 @@ public class AddComputer  {
 
 		pModel.addAttribute("computerEdit", null);
 		if(id != -1) {
-			pModel.addAttribute("computerEdit", MapComputerDTO.ModelToDto(computerServices.getComputerById(id)));
+			pModel.addAttribute("computerEdit", MapComputerDTO.ModelToDto(computerServices.getComputerById(id), null));
 		}
 
 		pModel.addAttribute("companyL", companyList);
 		pModel.addAttribute("result", (result != null) ? result : "");
     	
     }
-    
-/*
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		ICompanyServices companyServices = new CompanyServices();
-		IComputerServices computerServices = new ComputerServices();
-
-		List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
-
-		long id = (request.getParameter("computerId") != null) ? Long.valueOf(request.getParameter("computerId"))
-				: (request.getParameter("id") != null) ? Long.valueOf(request.getParameter("id"))  : -1l;
-
-		request.setAttribute("computerEdit", null);
-		request.setAttribute("computerEdit", MapComputerDTO.ModelToDto(computerServices.getComputerById(id)));
-
-		request.setAttribute("companyL", companyList);
-		request.setAttribute("result", (request.getAttribute("result") != null) ? request.getAttribute("result") : "");
-
-		getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
-	}*/
-    
-    /*
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ComputerDTO computerDto = new ComputerDTO();
-		String result = null;
-		if (request.getParameter("computerName") != null) {
-			computerDto.setName(request.getParameter("computerName"));
-			computerDto.setIntroduced(request.getParameter("introduced"));
-			computerDto.setDiscontinued(request.getParameter("discontinued"));
-			CompanyDTO companyDto = new CompanyDTO();
-			companyDto.setId(Long.valueOf(request.getParameter("companyId")));
-			computerDto.setCompanyDto(companyDto);
-			IComputerServices computerServices = new ComputerServices();
-			try {
-				if (request.getParameter("computerId") != null) {
-					computerDto.setId(Long.valueOf(request.getParameter("computerId")));
-					computerServices.updateComputer(MapComputerDTO.DtoToModel(computerDto));
-				} else {
-					computerServices.insertComputer(MapComputerDTO.DtoToModel(computerDto));
-				}
-				result = "succes";
-			} catch (Exception e) {
-				e.printStackTrace();
-				result = "operation fail";
-			}
-
-		}
-		request.setAttribute("result", result);
-		this.doGet(request, response);
-	}*/
 
 }

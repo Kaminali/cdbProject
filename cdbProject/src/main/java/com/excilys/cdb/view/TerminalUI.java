@@ -13,7 +13,6 @@ import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.dtoMapper.MapCompanyDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
-import com.excilys.cdb.controler.services.CompanyServices;
 import com.excilys.cdb.controler.services.ICompanyServices;
 import com.excilys.cdb.controler.services.IComputerServices;
 /**
@@ -24,8 +23,6 @@ import com.excilys.cdb.controler.services.IComputerServices;
 @Controller
 public class TerminalUI {
 
-	//private IComputerServices computerServices;
-	private ICompanyServices companyServices;
 	private StringBuffer menu;
 	private String newLine;
 	private int demande;
@@ -33,9 +30,11 @@ public class TerminalUI {
 
 	@Autowired
 	private IComputerServices computerServices;
+
+	@Autowired
+	private ICompanyServices companyServices;
 	
 	public TerminalUI() {
-		companyServices = new CompanyServices();
 
 		newLine = System.getProperty("line.separator");
 
@@ -81,7 +80,6 @@ public class TerminalUI {
 			switch (demande) {
 
 			case 1:
-				testSpring();
 				computerList();
 				break;
 			case 2:
@@ -120,14 +118,9 @@ public class TerminalUI {
 		}
 	}
 
-	private void testSpring() {
-		//ApplicationContext context = new ClassPathXmlApplicationContext("Spring.xml");
-		//IComputerServices test = (ComputerServices) context.getBean("computerService");
-		//computerServices.getNb();
-	}
 	
 	private void computerList() {
-		List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer(-1l, -1l));
+		List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer(-1l, -1l), null);
 		for (ComputerDTO computer : computerList) {
 			System.out.println(computer.toStringMin());
 		}
@@ -144,7 +137,7 @@ public class TerminalUI {
 		}
 
 		try {
-			ComputerDTO computer = MapComputerDTO.ModelToDto(computerServices.getComputerById(id));
+			ComputerDTO computer = MapComputerDTO.ModelToDto(computerServices.getComputerById(id), null);
 			System.out.println(computer.toString());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

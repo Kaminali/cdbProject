@@ -2,13 +2,16 @@ package com.excilys.cdb.controler.servlet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.excilys.cdb.controler.dto.ComputerDTO;
 import com.excilys.cdb.controler.dtoMapper.MapComputerDTO;
 import com.excilys.cdb.controler.services.IComputerServices;
@@ -20,6 +23,8 @@ public class Dashboard {
 
 	@Autowired
 	private IComputerServices computerServices;
+	
+	private Locale locale;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadOrRefreshG(final ModelMap pModel,  
@@ -28,9 +33,12 @@ public class Dashboard {
 			@RequestParam(value="nb", defaultValue="10") long nb,
 			@RequestParam(value="nbB", defaultValue="-1") long nbB,
 			@RequestParam(value="search", required = false) String search,
-			@RequestParam(value="searchC", required = false) String searchC
+			@RequestParam(value="searchC", required = false) String searchC,
+			@RequestParam(value="lang", required = false) String lang
 			) {
 
+		locale = LocaleContextHolder.getLocale();
+		
 		operation(pModel, p, selection, nb, nbB, search, searchC);
 		
 		return "dashboard";
@@ -44,9 +52,13 @@ public class Dashboard {
 			@RequestParam(value="nb", defaultValue="10") long nb,
 			@RequestParam(value="nbB", defaultValue="-1") long nbB,
 			@RequestParam(value="search", required = false) String search,
-			@RequestParam(value="searchC", required = false) String searchC
+			@RequestParam(value="searchC", required = false) String searchC,
+			@RequestParam(value="lang", required = false) String lang
 			) {
 
+
+		locale = LocaleContextHolder.getLocale();
+		
 		operation(pModel, p, selection, nb, nbB, search, searchC);
 
 		return "dashboard";
@@ -73,14 +85,14 @@ public class Dashboard {
 		List<ComputerDTO> computerList;
 		if( (search != null && search != "") || (searchC != null && searchC != "")) {
 			computerList = (search != null) ? 
-					MapComputerDTO.ModelToDto(computerServices.getByName(search , (p-1)*nb, nb))
-					:  MapComputerDTO.ModelToDto(computerServices.getByName(String.valueOf(searchC) , (p-1)*nb, nb));
+					MapComputerDTO.ModelToDto(computerServices.getByName(search , (p-1)*nb, nb), locale)
+					:  MapComputerDTO.ModelToDto(computerServices.getByName(String.valueOf(searchC) , (p-1)*nb, nb), locale);
 					pModel.addAttribute("searchC", (search != null) ? "&search="+search : "&search="+searchC);
 					page.setNbElement(computerServices.getNb(search));
 					page.setSearch((search != null) ? search : searchC);
 		}
 		else {
-			computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer((p-1)*nb, nb));
+			computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer((p-1)*nb, nb), locale);
 			pModel.addAttribute("searchC", "");
 			page.setNbElement(computerServices.getNb());
 

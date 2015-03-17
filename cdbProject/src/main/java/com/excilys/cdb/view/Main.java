@@ -13,7 +13,7 @@ public class Main {
 		
 		LOGGER.info("Logger launch");
 
-		ApplicationContext context = new ClassPathXmlApplicationContext("application_contexte.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationcontexte.xml");
 		TerminalUI terminal = (TerminalUI) context.getBean("terminalUI");
 		terminal.launchUI();
 	}

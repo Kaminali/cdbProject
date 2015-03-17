@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.controler.dto.ComputerDTO;
@@ -20,7 +20,7 @@ import com.excilys.cdb.controler.services.IComputerServices;
  *
  */
 
-@Controller
+@Component
 public class TerminalUI {
 
 	private StringBuffer menu;

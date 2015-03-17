@@ -7,11 +7,10 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.excilys.cdb.model.bean.Company;
 
-@SuppressWarnings("rawtypes")
-public class MapCompany implements RowMapper {
+public class MapCompany implements RowMapper<Company> {
 	
 	@Override
-	public Object mapRow(ResultSet result, int rowNum) throws SQLException {
+	public Company mapRow(ResultSet result, int rowNum) throws SQLException {
 		Company company = new Company();
 		company.setId(result.getLong("id"));
 		company.setName(result.getString("name"));

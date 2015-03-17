@@ -8,11 +8,10 @@ import com.excilys.cdb.model.bean.Computer;
 
 import org.springframework.jdbc.core.RowMapper;
 
-@SuppressWarnings("rawtypes")
-public class MapComputer implements RowMapper {
+public class MapComputer implements RowMapper<Computer> {
 
 	@Override
-	public Object mapRow(ResultSet result, int rowNum) throws SQLException {
+	public Computer mapRow(ResultSet result, int rowNum) throws SQLException {
 		Computer computer = new Computer();
 		computer.setId(result.getLong("id"));
 		computer.setName(result.getString("name"));

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ page import="java.util.*"%>
 
 <%@ taglib tagdir="/WEB-INF/tags/" prefix="page"%>
@@ -22,8 +22,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard"> Application - Computer
-				Database </a>
+			<a class="navbar-brand" href="dashboard"><spring:message code="messages.title" text="default text" /></a>
 		</div>
 	</header>
 
@@ -37,15 +36,15 @@
 					<form id="searchForm" action="#" method="GET" class="form-inline">
 
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
+							class="form-control" placeholder="<spring:message code="messages.search" text="default text" />" /> <input
+							type="submit" id="searchsubmit" value="<spring:message code="messages.filter" text="default text" />"
 							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="messages.add" text="default text" />
+						<spring:message code="messages.computer" text="default text" /></a> <a class="btn btn-default" id="editComputer" href="#"
+						onclick="$.fn.toggleEditMode();"><spring:message code="messages.edit" text="default text" /></a>
 				</div>
 			</div>
 		</div>
@@ -66,10 +65,10 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
-						<th>Discontinued date</th>
-						<th>Company</th>
+						<th><spring:message code="messages.computerName" text="default text" /></th>
+						<th><spring:message code="messages.introduced" text="default text" /></th>
+						<th><spring:message code="messages.discontinued" text="default text" /></th>
+						<th><spring:message code="messages.company" text="default text" /></th>
 
 					</tr>
 				</thead>
@@ -91,6 +90,12 @@
 
 
 	<page:page page="${pagination}" />
+	
+	<script type="text/javascript">
+	  var strings = new Array();
+	  strings['messages.view'] = "<spring:message code='messages.view' javaScriptEscape='true' />";
+	  strings['messages.edit'] = "<spring:message code='messages.edit' javaScriptEscape='true' />";
+	</script>
 
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

@@ -2,8 +2,6 @@ package com.excilys.cdb.controler.servlet;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -52,7 +50,7 @@ public class AddComputer  {
     		@RequestParam(value="companyId", required = false) final String companyId,
     		@RequestParam(value="computerId", required = false) final String computerId
     		) {
-    	
+
     	ComputerDTO computerDto = new ComputerDTO();
 		String result = null;
 		

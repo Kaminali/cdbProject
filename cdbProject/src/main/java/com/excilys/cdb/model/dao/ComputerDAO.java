@@ -247,7 +247,6 @@ public class ComputerDAO extends JdbcDaoSupport implements IComputerDAO {
 		}
 
 		return ids;
-		// TODO Auto-generated method stub
 	}
 
 	@Override

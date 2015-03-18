@@ -18,6 +18,7 @@ import com.excilys.cdb.model.dao.IComputerDAO;
  *
  */
 @Service
+@Transactional
 public class ComputerServices implements IComputerServices {
 
 	@Autowired 
@@ -29,6 +30,7 @@ public class ComputerServices implements IComputerServices {
 	}
 
 	@Override
+	
 	public List<Computer> getAllComputer(long begin, long nb) {
 		List<Computer> computerList;
 		if (begin == -1 || nb == -1) {
@@ -39,18 +41,12 @@ public class ComputerServices implements IComputerServices {
 		return computerList;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.controler.services.IComputerServices#getComputerById(long)
-	 */
 	@Override
 	public Computer getComputerById(long id) {
 		Computer computer = computerDAO.getById(id);
 		return computer;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.controler.services.IComputerServices#insertComputer(com.excilys.cdb.model.bean.Computer)
-	 */
 	@Override
 	public void insertComputer(Computer computer) {
 		System.out.println(computer);
@@ -58,9 +54,6 @@ public class ComputerServices implements IComputerServices {
 		computerDAO.insert(computer);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.controler.services.IComputerServices#updateComputer(com.excilys.cdb.model.bean.Computer)
-	 */
 	@Override
 	public void updateComputer(Computer computer) {
 		System.out.println(computer);
@@ -68,9 +61,6 @@ public class ComputerServices implements IComputerServices {
 		computerDAO.update(computer);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.controler.services.IComputerServices#deleteComputer(java.lang.Long)
-	 */
 	@Override
 	public void deleteComputer(Long id) throws Exception {
 		Computer computer = new Computer();
@@ -79,18 +69,12 @@ public class ComputerServices implements IComputerServices {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.controler.services.IComputerServices#getNb()
-	 */
 	@Override
 	public int getNb() {
 		int temp = computerDAO.getNb();
 		return temp;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.controler.services.IComputerServices#getByName(java.lang.String, long, long)
-	 */
 	@Override
 	public List<Computer> getByName(String name, long begin, long nb) {
 		List<Computer> computerList;
@@ -102,20 +86,12 @@ public class ComputerServices implements IComputerServices {
 		return computerList;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.controler.services.IComputerServices#getNb(java.lang.String)
-	 */
 	@Override
 	public int getNb(String name) {
 		int temp = computerDAO.getNb(name);
 		return temp;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.controler.services.IComputerServices#deleteComputer(java.util.ArrayList)
-	 */
-
-	@Transactional
 	@Override
 	public void deleteComputer(ArrayList<Long> computersId) {
 		for(long id : computersId) {

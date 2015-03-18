@@ -10,22 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.bean.Company;
-import com.excilys.cdb.model.bean.Computer;
-import com.excilys.cdb.model.dao.ComputerDAO;
 import com.excilys.cdb.model.dao.ICompanyDAO;
+import com.excilys.cdb.model.dao.IComputerDAO;
 
 /**
  * @author Nicolas Guibert
  *
  */
 @Service
+@Transactional
 public class CompanyServices implements ICompanyServices {
 
 	@Autowired 
 	ICompanyDAO companyDAO;
 
 	@Autowired 
-	ComputerDAO computerDAO;
+	IComputerDAO computerDAO;
 
 	@Override
 	public List<Company> getAllCompany() {
@@ -33,10 +33,9 @@ public class CompanyServices implements ICompanyServices {
 		return companyList;
 	}
 
-	@Transactional
 	@Override
 	public void deleteCompany(Long idCompany) {
-		List<Long> ids = computerDAO.getIdsByCompany(idCompany);
+		/*List<Long> ids = computerDAO.getIdsByCompany(idCompany);
 		for(long id : ids) {
 			Computer computer = new Computer();
 			computer.setId(id);
@@ -44,7 +43,7 @@ public class CompanyServices implements ICompanyServices {
 		}
 		Company company = new Company();
 		company.setId(idCompany);
-		companyDAO.delete(company);
+		companyDAO.delete(company);*/
 	}
 	
 }

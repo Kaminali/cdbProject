@@ -3,20 +3,52 @@
  */
 package com.excilys.cdb.model.bean;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-/**
- * @author Nicolas Guibert
- *
- */
-public class Computer {
+import com.excilys.cdb.model.converter.LocalDatePersistenceConverter;
 
+
+@Entity
+@Table(name = "computer")
+public class Computer implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6159552519467659239L;
+
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
+	
+	@Column(name = "name", nullable = true, length = 255)
 	private String name;
+
+	@Column(name = "introduced", nullable = true)
+	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate introduced;
+
+	@Column(name = "discontinued", nullable = true)
+	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate discontinued;
+
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="company_id")
 	private Company company;
 
 	public Computer() {
@@ -102,9 +134,6 @@ public class Computer {
 		return company;
 	}
 
-	/**
-	 * @param company the company to set
-	 */
 	public void setCompany(Company company) {
 		this.company = company;
 	}

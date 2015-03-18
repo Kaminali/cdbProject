@@ -20,13 +20,11 @@ public interface IComputerDAO {
 
 	public abstract int getNb();
 
-	public abstract List<Computer> getByName(String name, long begin, long nb);
+	public abstract List<Computer> getByName(String name, Long begin, Long nb);
 
 	public abstract List<Computer> getByName(String name);
 
 	public abstract int getNb(String name);
-
-	public abstract List<Long> getIdsByCompany(Long id);
 
 	String testSpring();
 

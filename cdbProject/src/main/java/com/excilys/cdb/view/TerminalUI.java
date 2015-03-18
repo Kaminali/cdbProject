@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.excilys.cdb.controler.dto.CompanyDTO;
 import com.excilys.cdb.controler.dto.ComputerDTO;
@@ -21,6 +22,7 @@ import com.excilys.cdb.controler.services.IComputerServices;
  */
 
 @Component
+@EnableTransactionManagement
 public class TerminalUI {
 
 	private StringBuffer menu;

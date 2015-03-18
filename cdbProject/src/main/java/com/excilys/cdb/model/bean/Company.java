@@ -3,35 +3,46 @@
  */
 package com.excilys.cdb.model.bean;
 
-/**
- * @author excilys
- *
- */
-public class Company {
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "company")
+public class Company implements Serializable {
 	
-	private Long id;
-	private String name;
+
 	/**
-	 * @return the id
+	 * 
 	 */
+	private static final long serialVersionUID = 1936752071160451297L;
+
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	private Long id;
+
+	@Column(name = "name", nullable = true, length = 255)
+	private String name;
+	
 	public Long getId() {
 		return id;
 	}
-	/**
-	 * @param id the id to set
-	 */
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
-	/**
-	 * @return the name
-	 */
+
 	public String getName() {
 		return name;
 	}
-	/**
-	 * @param name the name to set
-	 */
+
 	public void setName(String name) {
 		this.name = name;
 	}

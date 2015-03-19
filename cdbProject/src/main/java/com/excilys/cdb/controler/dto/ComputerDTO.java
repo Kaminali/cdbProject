@@ -3,6 +3,8 @@
  */
 package com.excilys.cdb.controler.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 /**
  * @author excilys
@@ -33,6 +35,7 @@ public class ComputerDTO {
 		this.name = name;
 	}
 
+	@DateTimeFormat(pattern="#{messageSource.getMessage('date_format')}")
 	public String getIntroduced() {
 		return introduced;
 	}

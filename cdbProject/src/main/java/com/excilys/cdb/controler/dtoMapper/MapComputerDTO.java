@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.excilys.cdb.controler.dto.ComputerDTO;
+import com.excilys.cdb.model.bean.Company;
 import com.excilys.cdb.model.bean.Computer;
 
 public final class MapComputerDTO {
@@ -45,10 +46,15 @@ public final class MapComputerDTO {
 		} catch (Exception e) {
 			//computer.setDiscontinued(null);
 		}
-
-		computer.setCompany(MapCompanyDTO.DtoToModel(computerDto
-				.getCompanyDto()));
-
+		
+		if(computerDto.getCompanyId() != null) {
+			if(computerDto.getCompanyId() > -1) {
+				Company company = new Company();
+				company.setId(computerDto.getCompanyId());
+				company.setName(computerDto.getCompanyName());
+				computer.setCompany(company);
+			}
+		}
 		return computer;
 	}
 
@@ -74,7 +80,8 @@ public final class MapComputerDTO {
 		computerDto.setId(computer.getId());
 		computerDto.setIntroduced(dateInt);
 		computerDto.setDiscontinued(dateDisc);
-		computerDto.setCompanyDto(MapCompanyDTO.ModelToDto(computer.getCompany()));
+		computerDto.setCompanyName((computer.getCompany() != null) ? computer.getCompany().getName() : null);
+		computerDto.setCompanyId((computer.getCompany() != null) ? computer.getCompany().getId() : -1);
 
 		return computerDto;
 	}

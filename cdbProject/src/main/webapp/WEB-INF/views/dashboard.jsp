@@ -80,7 +80,7 @@
 							<td><a href="addComputer?id=${entry.getId()}" onclick="">${entry.getName()}</a></td>
 							<td>${entry.getIntroduced()}</td>
 							<td>${entry.getDiscontinued()}</td>
-							<td>${entry.getCompanyDto().getName()}</td>
+							<td>${entry.getCompanyName()}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

@@ -112,7 +112,7 @@ public class Computer implements Serializable {
 		computer.append(discontinued);
 		computer.append(newLine);
 		computer.append("\tEntreprise : ");
-		computer.append(getCompany().getName());
+		computer.append((getCompany() != null) ? getCompany().getName() : "");
 		computer.append(newLine);
 		
 		return computer.toString();

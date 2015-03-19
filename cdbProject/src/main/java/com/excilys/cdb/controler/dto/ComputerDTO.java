@@ -5,6 +5,8 @@ package com.excilys.cdb.controler.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author excilys
@@ -13,11 +15,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class ComputerDTO {
 
 	private Long id;
-	private String name;
-	private String introduced;
-	private String discontinued;
-	private CompanyDTO companyDto;	
 	
+	@NotNull
+	@Size(max=255, min=1)
+	private String name;
+	
+	
+	private String introduced;
+	
+	
+	private String discontinued;
+
+	private long companyId;
+
+	private String companyName;
 
 	public Long getId() {
 		return id;
@@ -27,6 +38,7 @@ public class ComputerDTO {
 		this.id = id;
 	}
 
+	
 	public String getName() {
 		return name;
 	}
@@ -35,7 +47,7 @@ public class ComputerDTO {
 		this.name = name;
 	}
 
-	@DateTimeFormat(pattern="#{messageSource.getMessage('date_format')}")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	public String getIntroduced() {
 		return introduced;
 	}
@@ -70,7 +82,7 @@ public class ComputerDTO {
 		computer.append(discontinued);
 		computer.append(newLine);
 		computer.append("\tEntreprise : ");
-		computer.append(companyDto.getName());
+		computer.append(companyName);
 		computer.append(newLine);
 		
 		return computer.toString();
@@ -88,15 +100,20 @@ public class ComputerDTO {
 		return computer.toString();
 	}
 
-	public CompanyDTO getCompanyDto() {
-		return companyDto;
+	public Long getCompanyId() {
+		return companyId;
 	}
 
-	/**
-	 * @param company the company to set
-	 */
-	public void setCompanyDto(CompanyDTO companyDto) {
-		this.companyDto = companyDto;
+	public void setCompanyId(Long id) {
+		this.companyId = id;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 }

@@ -13,6 +13,26 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
+
+<link rel="stylesheet" href="js/datePicker/jquery-ui.min.css">
+<script src="js/jquery.min.js"></script>
+<script src="js/datePicker/jquery-ui.js"></script>
+<!--  <link rel="stylesheet" href="/resources/demos/style.css">-->
+<script src="js/datePicker/datepicker-fr.js"></script>
+
+<script>
+	$(function() {
+		$( "#introduced" ).datepicker();
+		$( "#introduced" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+		$( "#introduced" ).datepicker( $.datepicker.regional[ "fr" ] );
+	});
+	$(function() {
+		$( "#discontinued" ).datepicker();
+		$( "#discontinued" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+		$( "#discontinued" ).datepicker( $.datepicker.regional[ "en" ] );
+	});
+</script>
+
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -47,11 +67,8 @@
 							</div>
 							<div class="form-group">
 								<label for="introduced"><spring:message code="messages.introduced" text="default text" /></label> <input
-									type="date" class="form-control" id="introduced"
-									name="introduced" placeholder="yyyy-[m]m-[d]d"
-									pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
-									oninvalid="setCustomValidity('<spring:message code="messages.dateF" text="default text" /> yyyy-[m]m-[d]d')"
-									onchange="try{setCustomValidity('')}catch(e){}"
+									type="text" class="form-control" id="introduced"
+									name="introduced" 
 									<c:if test="${not empty computerEdit}">
 										<c:out value="value=${computerEdit.getIntroduced()}" />
 									</c:if>
@@ -60,10 +77,7 @@
 							<div class="form-group">
 								<label for="discontinued"><spring:message code="messages.discontinued" text="default text" /></label> <input
 									type="date" class="form-control" id="discontinued"
-									name="discontinued" placeholder="yyyy-[m]m-[d]d"
-									pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
-									oninvalid="setCustomValidity('<spring:message code="messages.dateF" text="default text" /> yyyy-[m]m-[d]d')"
-									onchange="try{setCustomValidity('')}catch(e){}"
+									name="discontinued"
 									<c:if test="${not empty computerEdit}">
 										<c:out value="value=${computerEdit.getDiscontinued()}" />
 									</c:if>
@@ -75,10 +89,10 @@
 										<option value="0">--</option>
 										<c:forEach var="entry" items="${companyL}">
 											<c:if test="${not empty computerEdit}">
-												<c:if test="${computerEdit.getCompanyDto().getId() == entry.getId()}">
+												<c:if test="${computerEdit.getCompanyId() == entry.getId()}">
 													<option value="${entry.getId()}" selected="selected" >${entry.getName()}</option>
 												</c:if>
-												<c:if test="${computerEdit.getCompanyDto().getId() != entry.getId()}">
+												<c:if test="${computerEdit.getCompanyId() != entry.getId()}">
 													<option value="${entry.getId()}" >${entry.getName()}</option>
 												</c:if>
 											</c:if>

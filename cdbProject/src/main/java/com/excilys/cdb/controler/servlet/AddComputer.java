@@ -1,8 +1,10 @@
 package com.excilys.cdb.controler.servlet;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,7 @@ public class AddComputer  {
 	@Autowired
 	private ICompanyServices companyServices;
 
+	private Locale locale;
 	
     @RequestMapping(method = RequestMethod.GET)
     public String loadPage(final ModelMap pModel,  
@@ -51,7 +54,7 @@ public class AddComputer  {
     		@RequestParam(value="companyId", required = false) final String companyId,
     		@RequestParam(value="computerId", required = false) final String computerId
     		) {
-
+		
     	ComputerDTO computerDto = new ComputerDTO();
 		String result = null;
 		
@@ -59,9 +62,7 @@ public class AddComputer  {
 			computerDto.setName(computerName);
 			computerDto.setIntroduced(introduced);
 			computerDto.setDiscontinued(discontinued);
-			CompanyDTO companyDto = new CompanyDTO();
-			companyDto.setId(Long.valueOf(companyId));
-			computerDto.setCompanyDto(companyDto);
+			computerDto.setCompanyId(Long.valueOf(companyId));
 			if (computerId != null) {
 				computerDto.setId(Long.valueOf(computerId));
 				computerServices.updateComputer(MapComputerDTO.DtoToModel(computerDto));
@@ -89,6 +90,9 @@ public class AddComputer  {
 
 		pModel.addAttribute("companyL", companyList);
 		pModel.addAttribute("result", (result != null) ? result : "");
+
+		locale = LocaleContextHolder.getLocale();
+		pModel.addAttribute("langTag", locale.toLanguageTag());
     	
     }
 

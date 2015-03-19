@@ -186,9 +186,7 @@ public class TerminalUI {
 			computerDto.setName(name);
 			computerDto.setIntroduced(introduced);
 			computerDto.setDiscontinued(discontinued);
-			CompanyDTO companyDto = new CompanyDTO();
-			companyDto.setId(idCompany);
-			computerDto.setCompanyDto(companyDto);
+			computerDto.setCompanyId(idCompany);
 			computerServices.insertComputer(MapComputerDTO.DtoToModel(computerDto));
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
@@ -238,9 +236,7 @@ public class TerminalUI {
 			computerDto.setName(name);
 			computerDto.setIntroduced(introduced);
 			computerDto.setDiscontinued(discontinued);
-			CompanyDTO companyDto = new CompanyDTO();
-			companyDto.setId(idCompany);
-			computerDto.setCompanyDto(companyDto);
+			computerDto.setCompanyId(idCompany);
 			computerServices.updateComputer(MapComputerDTO.DtoToModel(computerDto));
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {

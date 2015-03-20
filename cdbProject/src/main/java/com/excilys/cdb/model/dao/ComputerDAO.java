@@ -4,6 +4,7 @@
 package com.excilys.cdb.model.dao;
 
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
@@ -47,7 +48,7 @@ public class ComputerDAO implements IComputerDAO {
 	@Override
 	public void insert(Computer computer){
 		/*Session session = sessionFactory.getCurrentSession();
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
+		Transaction tx = session.beginTransaction();
 		session.save(computer);
 		tx.commit();*/
 		sessionFactory.getCurrentSession().save(computer);

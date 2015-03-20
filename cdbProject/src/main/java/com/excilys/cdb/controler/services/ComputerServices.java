@@ -30,7 +30,6 @@ public class ComputerServices implements IComputerServices {
 	}
 
 	@Override
-	
 	public List<Computer> getAllComputer(long begin, long nb) {
 		List<Computer> computerList;
 		if (begin == -1 || nb == -1) {
@@ -50,14 +49,12 @@ public class ComputerServices implements IComputerServices {
 	@Override
 	public void insertComputer(Computer computer) {
 		System.out.println(computer);
-		System.out.println(computerDAO);
 		computerDAO.insert(computer);
 	}
 
 	@Override
 	public void updateComputer(Computer computer) {
 		System.out.println(computer);
-		System.out.println(computerDAO);
 		computerDAO.update(computer);
 	}
 

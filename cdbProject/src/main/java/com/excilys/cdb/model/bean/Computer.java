@@ -3,8 +3,6 @@
  */
 package com.excilys.cdb.model.bean;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -12,11 +10,10 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.excilys.cdb.model.converter.LocalDatePersistenceConverter;
@@ -32,23 +29,22 @@ public class Computer implements Serializable {
 	private static final long serialVersionUID = -6159552519467659239L;
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id")
 	private Long id;
 	
-	@Column(name = "name", nullable = true, length = 255)
+	@Column(name = "name")
 	private String name;
 
-	@Column(name = "introduced", nullable = true)
+	@Column(name = "introduced")
 	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate introduced;
 
-	@Column(name = "discontinued", nullable = true)
+	@Column(name = "discontinued")
 	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate discontinued;
 
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="company_id")
+	@OneToOne(optional = true)
 	private Company company;
 
 	public Computer() {

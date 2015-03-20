@@ -26,6 +26,9 @@
 		</div>
 	</header>
 
+<a href="dashboard?lang=en"><img src="images/en.png" ></a>
+<a href="dashboard?lang=fr"><img src="images/fr.png" ></a>
+
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
@@ -76,11 +79,11 @@
 					<c:forEach var="entry" items="${resultatC}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${entry.getId()}"></td>
-							<td><a href="addComputer?id=${entry.getId()}" onclick="">${entry.getName()}</a></td>
-							<td>${entry.getIntroduced()}</td>
-							<td>${entry.getDiscontinued()}</td>
-							<td>${entry.getCompanyName()}</td>
+								class="cb" value="${entry.id}"></td>
+							<td><a href="addComputer?id=${entry.id}" onclick="">${entry.name}</a></td>
+							<td>${entry.introduced}</td>
+							<td>${entry.discontinued}</td>
+							<td>${entry.companyName}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

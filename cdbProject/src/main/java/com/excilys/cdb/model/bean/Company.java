@@ -3,15 +3,15 @@
  */
 package com.excilys.cdb.model.bean;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "company")
@@ -24,11 +24,11 @@ public class Company implements Serializable {
 	private static final long serialVersionUID = 1936752071160451297L;
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id")
 	private Long id;
 
-	@Column(name = "name", nullable = true, length = 255)
+	@Column(name = "name")
 	private String name;
 	
 	public Long getId() {

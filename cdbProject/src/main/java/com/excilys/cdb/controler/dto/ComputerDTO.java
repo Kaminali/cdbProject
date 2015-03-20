@@ -3,10 +3,10 @@
  */
 package com.excilys.cdb.controler.dto;
 
-import org.springframework.format.annotation.DateTimeFormat;
+
+import com.excilys.cdb.controler.validator.Date;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * @author excilys
@@ -16,14 +16,13 @@ public class ComputerDTO {
 
 	private Long id;
 	
-	@NotNull
-	@Size(max=255, min=1)
+	@NotNull(message="name null")
 	private String name;
 	
-	
+	@Date(message="fromat error")
 	private String introduced;
 	
-	
+	@Date(message="fromat error")
 	private String discontinued;
 
 	private long companyId;
@@ -47,7 +46,7 @@ public class ComputerDTO {
 		this.name = name;
 	}
 
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	//@DateTimeFormat(pattern="yyyy-MM-dd")
 	public String getIntroduced() {
 		return introduced;
 	}

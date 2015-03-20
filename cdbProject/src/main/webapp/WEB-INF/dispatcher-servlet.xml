@@ -10,20 +10,28 @@
     http://www.springframework.org/schema/mvc/spring-mvc.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
+	<mvc:annotation-driven />
+
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang"></property>
+		</bean>
+	</mvc:interceptors>
+
     <bean id="messageSource"
     class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-    <property name="basename" value="classpath:messages" />
-    <property name="defaultEncoding" value="UTF-8" />
+	    <property name="basename" value="classpath:messages" />
+	    <property name="defaultEncoding" value="UTF-8" />
 	</bean>
-	 
+	 <!-- 
 	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 	    <property name="paramName" value="lang" />
 	</bean>
-	  
+	   -->
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 	    <property name="defaultLocale" value="en"/>
 	</bean>
-	 
+	 <!-- 
 	<bean id="handlerMapping"
 	    class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 	    <property name="interceptors">
@@ -31,6 +39,10 @@
 	    </property>
 	</bean>
      
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+ 		<property name="validationMessageSource" ref="messageSource"></property>
+	</bean>
+      -->
     <context:component-scan base-package="com.excilys.cdb.controler.servlet" />
 
     <bean

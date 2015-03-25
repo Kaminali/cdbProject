@@ -55,5 +55,14 @@
         </property>
     </bean>
     
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+      <property name="defaultStatusCode" value="200"/>
+      <property name="defaultErrorView" value="/error"/>
+      <property name="exceptionMappings">
+       <props>
+       <prop key="org.springframework.security.access.AccessDeniedException">/denied</prop>
+       </props>
+      </property>
+   </bean>
     
 </beans>

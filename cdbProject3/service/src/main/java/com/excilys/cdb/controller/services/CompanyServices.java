@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.excilys.cdb.controler.services;
+package com.excilys.cdb.controller.services;
 
 import java.util.List;
 

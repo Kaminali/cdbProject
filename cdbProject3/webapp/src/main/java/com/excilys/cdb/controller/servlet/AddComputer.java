@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.cdb.controler.services.ICompanyServices;
-import com.excilys.cdb.controler.services.IComputerServices;
 import com.excilys.cdb.controller.dto.CompanyDTO;
 import com.excilys.cdb.controller.dto.ComputerDTO;
 import com.excilys.cdb.controller.dtoMapper.MapCompanyDTO;
 import com.excilys.cdb.controller.dtoMapper.MapComputerDTO;
+import com.excilys.cdb.controller.services.ICompanyServices;
+import com.excilys.cdb.controller.services.IComputerServices;
 
 
 @Controller

@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.excilys.cdb.controler.services.ICompanyServices;
-import com.excilys.cdb.controler.services.IComputerServices;
 import com.excilys.cdb.controller.dto.CompanyDTO;
 import com.excilys.cdb.controller.dto.ComputerDTO;
 import com.excilys.cdb.controller.dtoMapper.MapCompanyDTO;
 import com.excilys.cdb.controller.dtoMapper.MapComputerDTO;
+import com.excilys.cdb.controller.services.ICompanyServices;
+import com.excilys.cdb.controller.services.IComputerServices;
 /**
  * @author excilys
  *

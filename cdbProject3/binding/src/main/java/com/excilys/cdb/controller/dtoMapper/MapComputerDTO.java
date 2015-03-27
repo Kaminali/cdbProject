@@ -35,7 +35,6 @@ public final class MapComputerDTO {
 		computer.setName(computerDto.getName());
 		computer.setId(computerDto.getId());
 		computer.setIntroduced((computerDto.getIntroduced() == null) ? LocalDate.parse(computerDto.getIntroduced()) : null);
-		computer.setDiscontinued(LocalDate.parse(computerDto.getDiscontinued()));
 		computer.setDiscontinued((computerDto.getDiscontinued() == null) ? LocalDate.parse(computerDto.getDiscontinued()) : null);
 		if (computerDto.getCompanyId() != null) {
 			if (computerDto.getCompanyId() > -1) {

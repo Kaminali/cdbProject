@@ -16,14 +16,14 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.excilys.cdb</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>core</artifactId>
-			<version>5.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.excilys.cdb</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>persistence</artifactId>
-			<version>5.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		 
 		<dependency>

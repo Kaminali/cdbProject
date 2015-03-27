@@ -15,14 +15,14 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.excilys.cdb</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>service</artifactId>
-			<version>5.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.excilys.cdb</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>binding</artifactId>
-			<version>5.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp.jstl</groupId>

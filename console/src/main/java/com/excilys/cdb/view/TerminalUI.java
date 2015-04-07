@@ -6,6 +6,13 @@ package com.excilys.cdb.view;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -14,8 +21,6 @@ import com.excilys.cdb.controller.dto.CompanyDTO;
 import com.excilys.cdb.controller.dto.ComputerDTO;
 import com.excilys.cdb.controller.dtoMapper.MapCompanyDTO;
 import com.excilys.cdb.controller.dtoMapper.MapComputerDTO;
-import com.excilys.cdb.controller.services.ICompanyServices;
-import com.excilys.cdb.controller.services.IComputerServices;
 /**
  * @author excilys
  *
@@ -29,13 +34,13 @@ public class TerminalUI {
 	private String newLine;
 	private int demande;
 	private Scanner sc;
-
+/*
 	@Autowired
 	private IComputerServices computerServices;
 
 	@Autowired
 	private ICompanyServices companyServices;
-	
+	*/
 	public TerminalUI() {
 
 		newLine = System.getProperty("line.separator");
@@ -97,7 +102,7 @@ public class TerminalUI {
 				updateComputer();
 				break;
 			case 6:
-				removeComputer();
+				//removeCompany();
 				break;
 			case 7:
 				removeCompany();
@@ -122,14 +127,21 @@ public class TerminalUI {
 
 	
 	private void computerList() {
-		List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer(-1l, -1l), null);
+		
+		Client client = ClientBuilder.newBuilder().register(JacksonFeature.class)
+		            .build();
+		WebTarget computerTarget = client.target("http://localhost:8580/cdbProject/rest/hello/c");
+		//ComputerDTO computer = computerTarget.path("/"+str).request(MediaType.APPLICATION_JSON).get(new GenericType<ComputerDTO>() {});
+		List<ComputerDTO> computerList = computerTarget.request(MediaType.APPLICATION_JSON).get(new GenericType<List<ComputerDTO>>() {});
+		
+		//List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer(-1l, -1l), null);
 		for (ComputerDTO computer : computerList) {
-			System.out.println(computer.toStringMin());
+			System.out.println(computer.toString());
 		}
 	}
 
 	private void computerDetail() {
-		System.out.println("taper un id valide d'ordinateur");
+		/*System.out.println("taper un id valide d'ordinateur");
 		long id = -2;
 		try {
 			id = Long.parseLong(sc.nextLine());
@@ -143,19 +155,19 @@ public class TerminalUI {
 			System.out.println(computer.toString());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-		}
+		}*/
 
 	}
 
 	private void companyList() {
-		List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
+		/*List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
 		for (CompanyDTO company : companyList) {
 			System.out.println(company.toString());
-		}
+		}*/
 	}
 
 	private void addComputer() {
-		System.out.println("Taper le nom de l'ordinateur (obligatoire)");
+		/*System.out.println("Taper le nom de l'ordinateur (obligatoire)");
 		String name;
 		String introduced;
 		String discontinued;
@@ -192,11 +204,11 @@ public class TerminalUI {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}
+		}*/
 	}
 
 	private void updateComputer() {
-		System.out.println("Taper l'id de l'ordinateur");
+		/*System.out.println("Taper l'id de l'ordinateur");
 		Long id;
 		String name;
 		String introduced;
@@ -261,12 +273,12 @@ public class TerminalUI {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}
+		}*/
 
 	}
 	
 	private void removeCompany()  {
-		System.out.println("Taper l'id de l'entreprise");
+		/*System.out.println("Taper l'id de l'entreprise");
 		Long id;
 
 		try {
@@ -282,7 +294,7 @@ public class TerminalUI {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}
+		}*/
 
 	}
 }

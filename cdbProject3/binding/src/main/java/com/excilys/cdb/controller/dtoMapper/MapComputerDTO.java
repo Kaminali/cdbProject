@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import com.excilys.cdb.controller.dto.ComputerDTO;
 import com.excilys.cdb.model.bean.Company;
@@ -14,20 +14,13 @@ import com.excilys.cdb.model.bean.Computer;
 
 public final class MapComputerDTO {
 	public static List<Computer> DtoToModel(List<ComputerDTO> computerDtoL) {
-		List<Computer> computerL = new ArrayList<Computer>();
-		for (ComputerDTO computerDto : computerDtoL) {
-			computerL.add(DtoToModel(computerDto));
-		}
-		return computerL;
+		return computerDtoL.stream().map(b -> MapComputerDTO.DtoToModel(b)).collect(Collectors.toList());
 	}
 
 	public static List<ComputerDTO> ModelToDto(List<Computer> computerL,
 			Locale locale) {
-		List<ComputerDTO> computerDtoL = new ArrayList<ComputerDTO>();
-		for (Computer computer : computerL) {
-			computerDtoL.add(ModelToDto(computer, locale));
-		}
-		return computerDtoL;
+		return computerL.stream().map(b -> MapComputerDTO.ModelToDto(b, locale)).collect(Collectors.toList());
+		
 	}
 
 	public static Computer DtoToModel(ComputerDTO computerDto) {

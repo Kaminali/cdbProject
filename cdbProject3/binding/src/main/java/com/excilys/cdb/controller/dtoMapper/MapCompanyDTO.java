@@ -3,8 +3,8 @@
  */
 package com.excilys.cdb.controller.dtoMapper;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.excilys.cdb.controller.dto.CompanyDTO;
 import com.excilys.cdb.model.bean.Company;
@@ -16,19 +16,11 @@ import com.excilys.cdb.model.bean.Company;
 public final class MapCompanyDTO {
 
 	public static List<Company> DtoToModel(List<CompanyDTO> companyDtoL) {
-		List<Company> companyL = new ArrayList<Company>();
-		for (CompanyDTO companyDto : companyDtoL) {
-			companyL.add(DtoToModel(companyDto));
-		}
-		return companyL;
+		return companyDtoL.stream().map(b -> MapCompanyDTO.DtoToModel(b)).collect(Collectors.toList());
 	}
 
 	public static List<CompanyDTO> ModelToDto(List<Company> companyL) {
-		List<CompanyDTO> companyDtoL = new ArrayList<CompanyDTO>();
-		for (Company company : companyL) {
-			companyDtoL.add(ModelToDto(company));
-		}
-		return companyDtoL;
+		return companyL.stream().map(b -> MapCompanyDTO.ModelToDto(b)).collect(Collectors.toList());
 	}
 
 	public static Company DtoToModel(CompanyDTO companyDto) {

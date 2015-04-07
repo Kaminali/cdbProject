@@ -14,7 +14,7 @@ public class Main {
 		LOGGER.info("Logger launch");
 
 		LOGGER.debug("");
-		
+
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		TerminalUI terminal = (TerminalUI) context.getBean("terminalUI");
 		terminal.launchUI();

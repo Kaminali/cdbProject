@@ -1,0 +1,8 @@
+/home/excilys/git2/cdbProject3/persistence/src/main/java/com/excilys/cdb/model/dao/ComputerDAO.java
+/home/excilys/git2/cdbProject3/persistence/src/main/java/com/excilys/cdb/model/mapper/MapCompany.java
+/home/excilys/git2/cdbProject3/persistence/src/main/java/com/excilys/cdb/model/dao/UserDAO.java
+/home/excilys/git2/cdbProject3/persistence/src/main/java/com/excilys/cdb/model/dao/CompanyDAO.java
+/home/excilys/git2/cdbProject3/persistence/src/main/java/com/excilys/cdb/model/dao/IComputerDAO.java
+/home/excilys/git2/cdbProject3/persistence/src/main/java/com/excilys/cdb/model/mapper/MapComputer.java
+/home/excilys/git2/cdbProject3/persistence/src/main/java/com/excilys/cdb/model/dao/IUserDAO.java
+/home/excilys/git2/cdbProject3/persistence/src/main/java/com/excilys/cdb/model/dao/ICompanyDAO.java

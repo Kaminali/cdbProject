@@ -1,0 +1,8 @@
+/home/excilys/git2/cdbProject3/core/src/main/java/com/excilys/cdb/model/converter/LocalDatePersistenceConverter.java
+/home/excilys/git2/cdbProject3/core/src/main/java/com/excilys/cdb/model/bean/User.java
+/home/excilys/git2/cdbProject3/core/src/main/java/com/excilys/cdb/model/bean/Company.java
+/home/excilys/git2/cdbProject3/core/src/main/java/com/excilys/cdb/controller/validator/DateValidator.java
+/home/excilys/git2/cdbProject3/core/src/main/java/com/excilys/cdb/model/bean/UserRole.java
+/home/excilys/git2/cdbProject3/core/src/main/java/com/excilys/cdb/model/bean/Computer.java
+/home/excilys/git2/cdbProject3/core/src/main/java/com/excilys/cdb/controller/validator/Date.java
+/home/excilys/git2/cdbProject3/core/src/main/java/com/excilys/cdb/controller/validator/DateConverter.java

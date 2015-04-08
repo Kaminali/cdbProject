@@ -12,5 +12,6 @@
 
 	
     <context:component-scan base-package="com.excilys.cdb.controller.services" />
+    <import resource="classpath*:/service-context.xml"/>
 
 </beans>

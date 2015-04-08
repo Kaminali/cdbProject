@@ -10,6 +10,6 @@ public interface ICompanyDAO {
 
 	public abstract Company getById(Long id);
 
-	public abstract void delete(Company company);
+	public void delete(Company company);
 
 }

@@ -26,7 +26,5 @@ public interface IComputerDAO {
 
 	public abstract int getNb(String name);
 
-	String testSpring();
-
-
+	public List<Computer> getIdsByCompany(Long id);
 }

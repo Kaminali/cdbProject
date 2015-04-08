@@ -8,19 +8,17 @@ import java.util.Scanner;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.excilys.cdb.controller.dto.CompanyDTO;
 import com.excilys.cdb.controller.dto.ComputerDTO;
-import com.excilys.cdb.controller.dtoMapper.MapCompanyDTO;
-import com.excilys.cdb.controller.dtoMapper.MapComputerDTO;
 /**
  * @author excilys
  *
@@ -34,15 +32,14 @@ public class TerminalUI {
 	private String newLine;
 	private int demande;
 	private Scanner sc;
-/*
-	@Autowired
-	private IComputerServices computerServices;
+	private Client client;
 
-	@Autowired
-	private ICompanyServices companyServices;
-	*/
 	public TerminalUI() {
 
+
+		client = ClientBuilder.newBuilder().register(JacksonFeature.class)
+		            .build();
+		
 		newLine = System.getProperty("line.separator");
 
 		menu = new StringBuffer("1 : afficher les ordinateur");
@@ -102,7 +99,7 @@ public class TerminalUI {
 				updateComputer();
 				break;
 			case 6:
-				//removeCompany();
+				removeComputer();
 				break;
 			case 7:
 				removeCompany();
@@ -128,20 +125,16 @@ public class TerminalUI {
 	
 	private void computerList() {
 		
-		Client client = ClientBuilder.newBuilder().register(JacksonFeature.class)
-		            .build();
-		WebTarget computerTarget = client.target("http://localhost:8580/cdbProject/rest/hello/c");
-		//ComputerDTO computer = computerTarget.path("/"+str).request(MediaType.APPLICATION_JSON).get(new GenericType<ComputerDTO>() {});
-		List<ComputerDTO> computerList = computerTarget.request(MediaType.APPLICATION_JSON).get(new GenericType<List<ComputerDTO>>() {});
-		
-		//List<ComputerDTO> computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer(-1l, -1l), null);
+		WebTarget computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/getComputers");
+		List<ComputerDTO> computerList = computerTarget.path("/-1/-1/null")
+				.request(MediaType.APPLICATION_JSON).get(new GenericType<List<ComputerDTO>>() {});
 		for (ComputerDTO computer : computerList) {
 			System.out.println(computer.toString());
 		}
 	}
 
 	private void computerDetail() {
-		/*System.out.println("taper un id valide d'ordinateur");
+		System.out.println("taper un id valide d'ordinateur");
 		long id = -2;
 		try {
 			id = Long.parseLong(sc.nextLine());
@@ -151,23 +144,29 @@ public class TerminalUI {
 		}
 
 		try {
-			ComputerDTO computer = MapComputerDTO.ModelToDto(computerServices.getComputerById(id), null);
+			WebTarget computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/getComputer");
+			ComputerDTO computer = computerTarget.path("/"+id+"/null")
+					.request(MediaType.APPLICATION_JSON).get(new GenericType<ComputerDTO>() {});
 			System.out.println(computer.toString());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-		}*/
+		}
 
 	}
 
 	private void companyList() {
-		/*List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
+		
+		WebTarget companyTarget = client.target("http://localhost:8580/cdbProject/rest/companyService/getCompanys");
+		
+		List<CompanyDTO> companyList = companyTarget.request(MediaType.APPLICATION_JSON).get(new GenericType<List<CompanyDTO>>() {}); 
+		
 		for (CompanyDTO company : companyList) {
 			System.out.println(company.toString());
-		}*/
+		}
 	}
 
 	private void addComputer() {
-		/*System.out.println("Taper le nom de l'ordinateur (obligatoire)");
+		System.out.println("Taper le nom de l'ordinateur (obligatoire)");
 		String name;
 		String introduced;
 		String discontinued;
@@ -199,16 +198,18 @@ public class TerminalUI {
 			computerDto.setIntroduced(introduced);
 			computerDto.setDiscontinued(discontinued);
 			computerDto.setCompanyId(idCompany);
-			computerServices.insertComputer(MapComputerDTO.DtoToModel(computerDto));
+			
+			WebTarget computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/addComputer");
+			computerTarget.request().post(Entity.entity(computerDto, "application/json"));
+
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}*/
+		}
 	}
 
 	private void updateComputer() {
-		/*System.out.println("Taper l'id de l'ordinateur");
+		System.out.println("Taper l'id de l'ordinateur");
 		Long id;
 		String name;
 		String introduced;
@@ -249,10 +250,12 @@ public class TerminalUI {
 			computerDto.setIntroduced(introduced);
 			computerDto.setDiscontinued(discontinued);
 			computerDto.setCompanyId(idCompany);
-			computerServices.updateComputer(MapComputerDTO.DtoToModel(computerDto));
+			
+			WebTarget computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/updateComputer");
+			computerTarget.request().post(Entity.entity(computerDto, "application/json"));
+			
 			System.out.println("Réussite de l'opération");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
 	}
@@ -267,18 +270,15 @@ public class TerminalUI {
 			id = null;
 		}
 
-		try {
-			computerServices.deleteComputer(id);
-			System.out.println("Réussite de l'opération");
-		} catch (Exception e) {
-			// e.printStackTrace();
-			System.out.println(e.getMessage());
-		}*/
+		WebTarget computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/removeComputer");
+		String result = computerTarget.path("/"+id).request(MediaType.APPLICATION_JSON).get(new GenericType<String>() {});
+		
+		System.out.println(result);
 
 	}
 	
 	private void removeCompany()  {
-		/*System.out.println("Taper l'id de l'entreprise");
+		System.out.println("Taper l'id de l'entreprise");
 		Long id;
 
 		try {
@@ -289,12 +289,14 @@ public class TerminalUI {
 
 		try {
 			System.out.println(id);
-			companyServices.deleteCompany(id);
-			System.out.println("Réussite de l'opération");
+			
+			WebTarget companyTarget = client.target("http://localhost:8580/cdbProject/rest/companyService/removeCompany");
+			String result = companyTarget.path("/"+id).request(MediaType.APPLICATION_JSON).get(new GenericType<String>() {});
+			
+			System.out.println(result);
 		} catch (Exception e) {
-			// e.printStackTrace();
 			System.out.println(e.getMessage());
-		}*/
+		}
 
 	}
 }

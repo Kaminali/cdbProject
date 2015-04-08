@@ -40,17 +40,11 @@ public class ComputerDAO implements IComputerDAO {
 
 	@Override
 	public Computer getById(Long id) {
-		
 		return (Computer) sessionFactory.getCurrentSession().get(Computer.class, id);
-		
 	}
 
 	@Override
 	public void insert(Computer computer){
-		/*Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.save(computer);
-		tx.commit();*/
 		sessionFactory.getCurrentSession().save(computer);
 	}
 
@@ -92,16 +86,19 @@ public class ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
-	public String testSpring() {
-		System.out.println("réussite");
-		return " canard ";
-	}
-
-	@Override
 	public int getNb() {
 
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
 		return (int) ((long) criteria.setProjection(Projections.rowCount()).uniqueResult());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Computer> getIdsByCompany(Long id) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+		criteria.add(Restrictions.eq("company", id));
+		System.out.println(criteria.list().toString());
+		return criteria.list();
 	}
 
 }

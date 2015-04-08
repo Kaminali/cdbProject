@@ -17,9 +17,8 @@ public final class MapComputerDTO {
 		return computerDtoL.stream().map(b -> MapComputerDTO.DtoToModel(b)).collect(Collectors.toList());
 	}
 
-	public static List<ComputerDTO> ModelToDto(List<Computer> computerL,
-			Locale locale) {
-		return computerL.stream().map(b -> MapComputerDTO.ModelToDto(b, locale)).collect(Collectors.toList());
+	public static List<ComputerDTO> ModelToDto(List<Computer> computerL, String lang) {
+		return computerL.stream().map(b -> MapComputerDTO.ModelToDto(b, lang)).collect(Collectors.toList());
 		
 	}
 
@@ -27,8 +26,10 @@ public final class MapComputerDTO {
 		Computer computer = new Computer();
 		computer.setName(computerDto.getName());
 		computer.setId(computerDto.getId());
-		computer.setIntroduced((computerDto.getIntroduced() == null) ? LocalDate.parse(computerDto.getIntroduced()) : null);
-		computer.setDiscontinued((computerDto.getDiscontinued() == null) ? LocalDate.parse(computerDto.getDiscontinued()) : null);
+		computer.setIntroduced((computerDto.getIntroduced() != null && computerDto.getIntroduced() != "") ? 
+				LocalDate.parse(computerDto.getIntroduced()) : null);
+		computer.setDiscontinued((computerDto.getDiscontinued() != null && computerDto.getDiscontinued() != "") ? 
+				LocalDate.parse(computerDto.getDiscontinued()) : null);
 		if (computerDto.getCompanyId() != null) {
 			if (computerDto.getCompanyId() > -1) {
 				Company company = new Company();
@@ -40,10 +41,11 @@ public final class MapComputerDTO {
 		return computer;
 	}
 	
-	public static ComputerDTO ModelToDto(Computer computer, Locale locale) {
+	public static ComputerDTO ModelToDto(Computer computer, String lang) {
 		String dateInt;
 		String dateDisc;
-		if (locale != null) {
+		if (lang != null && lang != "null") {
+			Locale locale = new Locale(lang);
 			DateTimeFormatter formatter = new DateTimeFormatterBuilder()
 					.append(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))
 					.toFormatter(locale);

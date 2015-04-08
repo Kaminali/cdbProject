@@ -3,7 +3,6 @@
  */
 package com.excilys.cdb.controller.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.cdb.model.bean.Computer;
 import com.excilys.cdb.model.dao.IComputerDAO;
 
-/**
- * @author excilys
- *
- */
 @Service
 @Transactional
 public class ComputerServices implements IComputerServices {
@@ -48,13 +43,11 @@ public class ComputerServices implements IComputerServices {
 
 	@Override
 	public void insertComputer(Computer computer) {
-		//System.out.println(computer);
 		computerDAO.insert(computer);
 	}
 
 	@Override
 	public void updateComputer(Computer computer) {
-		//System.out.println(computer);
 		computerDAO.update(computer);
 	}
 
@@ -90,7 +83,7 @@ public class ComputerServices implements IComputerServices {
 	}
 
 	@Override
-	public void deleteComputer(ArrayList<Long> computersId) {
+	public void deleteComputer(List<Long> computersId) {
 		for(long id : computersId) {
 			Computer computer = new Computer();
 			computer.setId(id);

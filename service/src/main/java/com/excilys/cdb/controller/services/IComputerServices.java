@@ -1,6 +1,5 @@
 package com.excilys.cdb.controller.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.model.bean.Computer;
@@ -23,7 +22,7 @@ public interface IComputerServices {
 
 	public abstract int getNb(String name);
 
-	public abstract void deleteComputer(ArrayList<Long> computersId);
+	public abstract void deleteComputer(List<Long> computersId);
 
 	public String testSpring();
 

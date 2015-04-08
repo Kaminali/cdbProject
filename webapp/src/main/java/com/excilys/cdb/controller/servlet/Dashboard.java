@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,18 +20,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.controller.dto.ComputerDTO;
-import com.excilys.cdb.controller.dtoMapper.MapComputerDTO;
-import com.excilys.cdb.controller.services.IComputerServices;
 import com.excilys.cdb.view.Page;
 
 @Controller
 @RequestMapping("/dashboard")
 public class Dashboard {
-
-	@Autowired
-	private IComputerServices computerServices;
 	
 	private Locale locale;
+	
+	private Client client;
+	
+	private WebTarget computerTarget;
+	
+	public Dashboard() {
+		client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadOrRefreshG(final ModelMap pModel,  
@@ -72,7 +82,8 @@ public class Dashboard {
 			for(String computer : computers) {
 				computersId.add(Long.valueOf(computer));
 			}
-			computerServices.deleteComputer(computersId);
+			computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/removeComputers");
+			computerTarget.request(MediaType.APPLICATION_JSON).post(Entity.entity(computersId, "application/json"), String.class);
 		}
 
 		nb = (nbB != -1) ? nbB : nb;
@@ -83,18 +94,31 @@ public class Dashboard {
 		page.setNbElementPage(nb);
 
 		List<ComputerDTO> computerList;
+
 		if( (search != null && search != "") || (searchC != null && searchC != "")) {
-			computerList = (search != null) ? 
-					MapComputerDTO.ModelToDto(computerServices.getByName(search , (p-1)*nb, nb), locale)
-					:  MapComputerDTO.ModelToDto(computerServices.getByName(String.valueOf(searchC) , (p-1)*nb, nb), locale);
-					pModel.addAttribute("searchC", (search != null) ? "&search="+search : "&search="+searchC);
-					page.setNbElement(computerServices.getNb(search));
-					page.setSearch((search != null) ? search : searchC);
+			
+			computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/getComputersSearch");
+			search = (search != null) ? search : searchC;
+			computerList = computerTarget.path("/"+search+"/"+(p-1)*nb+"/"+nb+"/"+locale.getLanguage())
+					.request(MediaType.APPLICATION_JSON).get(new GenericType<List<ComputerDTO>>() {});
+					
+			pModel.addAttribute("searchC", search);
+			
+
+			computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/getNb");
+			Integer nb2 = computerTarget.path("/"+search).request(MediaType.APPLICATION_JSON).get(new GenericType<Integer>() {});
+			page.setNbElement(nb2);
+			
+			page.setSearch(search);
 		}
 		else {
-			computerList = MapComputerDTO.ModelToDto(computerServices.getAllComputer((p-1)*nb, nb), locale);
+			computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/getComputers");
+			computerList = computerTarget.path("/"+(p-1)*nb+"/"+nb+"/"+locale.getLanguage())
+					.request(MediaType.APPLICATION_JSON).get(new GenericType<List<ComputerDTO>>() {});
 			pModel.addAttribute("searchC", "");
-			page.setNbElement(computerServices.getNb());
+			computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/getNb");
+			Integer nb2 = computerTarget.request(MediaType.APPLICATION_JSON).get(new GenericType<Integer>() {});
+			page.setNbElement(nb2);
 
 		}
 		pModel.addAttribute("resultatC", computerList);

@@ -4,8 +4,14 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.validation.Valid;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,24 +22,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.controller.dto.CompanyDTO;
 import com.excilys.cdb.controller.dto.ComputerDTO;
-import com.excilys.cdb.controller.dtoMapper.MapCompanyDTO;
-import com.excilys.cdb.controller.dtoMapper.MapComputerDTO;
-import com.excilys.cdb.controller.services.ICompanyServices;
-import com.excilys.cdb.controller.services.IComputerServices;
 
 
 @Controller
 @RequestMapping("/addComputer")
 public class AddComputer  {
-	
-	@Autowired
-	private IComputerServices computerServices;
-	
-	@Autowired
-	private ICompanyServices companyServices;
 
 	private Locale locale;
 	
+	private Client client;
+	
+	private WebTarget computerTarget;
+	
+	public AddComputer() {
+		client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
+	}
+
     @RequestMapping(method = RequestMethod.GET)
     public String loadPage(final ModelMap pModel,  
     		@RequestParam(value="id", defaultValue="-1") long id,
@@ -55,11 +59,14 @@ public class AddComputer  {
 			operation(pModel, id, "echec");
 		    return "addComputer";
 	    }
+
 	    if(id != -1 || computerDTO.getId() != null) {
-		    computerServices.updateComputer(MapComputerDTO.DtoToModel(computerDTO));
+	    	computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/updateComputer");
+	    	computerTarget.request().post(Entity.entity(computerDTO, "application/json"));
 	    }
 	    else {
-		    computerServices.insertComputer(MapComputerDTO.DtoToModel(computerDTO));
+	    	computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/addComputer");
+	    	computerTarget.request().post(Entity.entity(computerDTO, "application/json"));
 	    }
 		pModel.addAttribute("result", "succes");
 		operation(pModel, id, "succes");
@@ -67,11 +74,15 @@ public class AddComputer  {
     }
     
     private void operation(ModelMap pModel, long id, String result) {    	
-    	List<CompanyDTO> companyList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
+    	computerTarget = client.target("http://localhost:8580/cdbProject/rest/companyService/getCompanys");
+		List<CompanyDTO> companyList = computerTarget.request(MediaType.APPLICATION_JSON).get(new GenericType<List<CompanyDTO>>() {}); 
 
 		pModel.addAttribute("computerEdit", null);
 		if(id != -1) {
-			ComputerDTO computerDto = MapComputerDTO.ModelToDto(computerServices.getComputerById(id), null);
+			computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/getComputer");
+			ComputerDTO computerDto = computerTarget.path("/"+id+"/null")
+					.request(MediaType.APPLICATION_JSON).get(new GenericType<ComputerDTO>() {});
+			
 			pModel.addAttribute("computerEdit", computerDto);
 			pModel.addAttribute("computerDTO", computerDto);
 		}

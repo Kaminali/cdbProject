@@ -13,7 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.excilys.cdb.model.converter.LocalDatePersistenceConverter;
@@ -23,9 +24,6 @@ import com.excilys.cdb.model.converter.LocalDatePersistenceConverter;
 @Table(name = "computer")
 public class Computer implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6159552519467659239L;
 
 	@Id
@@ -44,7 +42,8 @@ public class Computer implements Serializable {
 	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate discontinued;
 
-	@OneToOne(optional = true)
+	@JoinColumn(name = "company_id")
+	@ManyToOne
 	private Company company;
 
 	public Computer() {

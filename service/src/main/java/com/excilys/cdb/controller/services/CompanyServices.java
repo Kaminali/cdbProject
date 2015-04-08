@@ -13,10 +13,6 @@ import com.excilys.cdb.model.bean.Company;
 import com.excilys.cdb.model.dao.ICompanyDAO;
 import com.excilys.cdb.model.dao.IComputerDAO;
 
-/**
- * @author Nicolas Guibert
- *
- */
 @Service
 @Transactional
 public class CompanyServices implements ICompanyServices {
@@ -26,24 +22,17 @@ public class CompanyServices implements ICompanyServices {
 
 	@Autowired 
 	IComputerDAO computerDAO;
-
+	
 	@Override
 	public List<Company> getAllCompany() {
 		List<Company> companyList = companyDAO.getList();
 		return companyList;
 	}
-
+	
 	@Override
 	public void deleteCompany(Long idCompany) {
-		/*List<Long> ids = computerDAO.getIdsByCompany(idCompany);
-		for(long id : ids) {
-			Computer computer = new Computer();
-			computer.setId(id);
-			computerDAO.delete( computer);
-		}
-		Company company = new Company();
-		company.setId(idCompany);
-		companyDAO.delete(company);*/
+		Company company = companyDAO.getById(idCompany);
+		companyDAO.delete(company);
 	}
 	
 }

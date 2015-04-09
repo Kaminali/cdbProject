@@ -8,10 +8,7 @@ import com.excilys.cdb.controller.validator.Date;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * @author excilys
- *
- */
+
 public class ComputerDTO {
 
 	private Long id;

@@ -8,6 +8,9 @@ public class Main {
 
 	static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
+	/**
+	 * load the context and launch the ui
+	 */
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		

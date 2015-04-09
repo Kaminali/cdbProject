@@ -1,0 +1,10 @@
+com.excilys.cdb.controler.validate
+com.excilys.cdb.controller.services
+com.excilys.cdb.controller.services.webService
+com.excilys.cdb.controller.servlet
+com.excilys.cdb.controller.validator
+com.excilys.cdb.model.bean
+com.excilys.cdb.model.converter
+com.excilys.cdb.model.dao
+com.excilys.cdb.test.service
+com.excilys.cdb.view

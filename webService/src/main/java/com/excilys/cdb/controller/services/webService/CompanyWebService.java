@@ -24,6 +24,10 @@ public class CompanyWebService {
 	@GET
 	@Path("/getCompanys")
 	@Produces("application/json")
+	/**
+	 * 
+	 * @return all company in a list
+	 */
 	public List<CompanyDTO> getComputers() {
  
 		List<CompanyDTO> computerList = MapCompanyDTO.ModelToDto(companyServices.getAllCompany());
@@ -35,6 +39,11 @@ public class CompanyWebService {
 	@GET
 	@Path("/removeCompany/{id}")
 	@Produces("application/json")
+	/**
+	 * delete a company
+	 * @param company id
+	 * WARNING : delete all related computer
+	 */
 	public String removeCompany(@PathParam("id") long id) {
 		try {
 			companyServices.deleteCompany(id);

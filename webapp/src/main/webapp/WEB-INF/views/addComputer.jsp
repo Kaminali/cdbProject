@@ -19,8 +19,8 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/datePicker/jquery-ui.js"></script>
 <!--  <link rel="stylesheet" href="/resources/demos/style.css">-->
-<script src="js/datePicker/datepicker-en.js"></script>
 <script src="js/datePicker/datepicker-fr.js"></script>
+<script src="js/datePicker/datepicker-en.js"></script>
 
 <script>
 	$(function() { 
@@ -28,7 +28,7 @@
 			changeYear: true});
 		$( "#introduced" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
 		$( "#introduced" ).datepicker( "setDate", "${computerEdit.introduced}" );
-		$( "#introduced" ).datepicker( $.datepicker.regional[ '${langTag}' ] );
+		$( "#introduced" ).datepicker( "option", $.datepicker.regional["${langTag}"] );
 		
 	});
 	$(function() {
@@ -36,7 +36,7 @@
 			changeYear: true});
 		$( "#discontinued" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
 		$( "#discontinued" ).datepicker( "setDate", "${computerEdit.discontinued}" );
-		$( "#discontinued" ).datepicker( $.datepicker.regional[ '${langTag}' ] );
+		$( "#discontinued" ).datepicker( "option", $.datepicker.regional["${langTag}"] );
 	});
 </script>
 

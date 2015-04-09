@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.excilys.cdb.model.dao;
 
 import java.util.List;
@@ -12,10 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.bean.Company;
 
-/**
- * @author Nicolas Guibert
- *
- */
 
 @Repository
 public class CompanyDAO implements ICompanyDAO {
@@ -40,10 +33,6 @@ public class CompanyDAO implements ICompanyDAO {
 
 	@Override
 	public void delete(Company company) {
-		/*Session session = sessionFactory.getCurrentSession();
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		session.delete(company);
-		tx.commit();*/
 		sessionFactory.getCurrentSession().delete(company);
 	}
 

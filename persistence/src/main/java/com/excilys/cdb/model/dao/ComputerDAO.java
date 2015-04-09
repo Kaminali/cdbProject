@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.excilys.cdb.model.dao;
 
 import java.util.List;

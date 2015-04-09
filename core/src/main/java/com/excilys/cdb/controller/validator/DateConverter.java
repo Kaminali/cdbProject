@@ -9,6 +9,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 public class DateConverter {
 
+	/**
+	 * Convert a String to a date, a yyyy-MM-dd is needed
+	 * @param sDate : String date
+	 * @return Date 
+	 */
 	public static Date stringToDate(String sDate) {
 		Date convertedCurrentDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -27,6 +32,7 @@ public class DateConverter {
 		return convertedCurrentDate;
 	}
 
+	
 	public static String localDate(String date) {
 		if (LocaleContextHolder.getLocale().toString().equals("fr")) {
 			String[] splittedDate = date.split("-");
@@ -37,6 +43,12 @@ public class DateConverter {
 		return date;
 	}
 
+	/**
+	 * check if a string is a date, with the regex in param
+	 * @param inputString : the string we need to validate
+	 * @param regex : the regex for check
+	 * @return a boolean, true if is a date.
+	 */
 	public static boolean isDate(String inputString, String regex) {
 		regex = "\\d{4}-\\d{2}-\\d{2}";
 		if (inputString == null || inputString.isEmpty())

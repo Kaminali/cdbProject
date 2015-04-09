@@ -122,17 +122,22 @@ public class TerminalUI {
 		}
 	}
 
-	
+	/**
+	 * display all computer
+	 */
 	private void computerList() {
 		
 		WebTarget computerTarget = client.target("http://localhost:8580/cdbProject/rest/computerService/getComputers");
 		List<ComputerDTO> computerList = computerTarget.path("/-1/-1/null")
 				.request(MediaType.APPLICATION_JSON).get(new GenericType<List<ComputerDTO>>() {});
 		for (ComputerDTO computer : computerList) {
-			System.out.println(computer.toString());
+			System.out.println(computer.toStringMin());
 		}
 	}
 
+	/**
+	 * display a computer with detail
+	 */
 	private void computerDetail() {
 		System.out.println("taper un id valide d'ordinateur");
 		long id = -2;
@@ -154,6 +159,9 @@ public class TerminalUI {
 
 	}
 
+	/**
+	 * Display all company
+	 */
 	private void companyList() {
 		
 		WebTarget companyTarget = client.target("http://localhost:8580/cdbProject/rest/companyService/getCompanys");
@@ -165,6 +173,9 @@ public class TerminalUI {
 		}
 	}
 
+	/**
+	 * add a computer
+	 */
 	private void addComputer() {
 		System.out.println("Taper le nom de l'ordinateur (obligatoire)");
 		String name;
@@ -208,6 +219,9 @@ public class TerminalUI {
 		}
 	}
 
+	/**
+	 * update a computer
+	 */
 	private void updateComputer() {
 		System.out.println("Taper l'id de l'ordinateur");
 		Long id;
@@ -260,6 +274,9 @@ public class TerminalUI {
 		}
 	}
 
+	/**
+	 * remove a computer
+	 */
 	private void removeComputer() {
 		System.out.println("Taper l'id de l'ordinateur");
 		Long id;
@@ -277,6 +294,10 @@ public class TerminalUI {
 
 	}
 	
+	/**
+	 * remove a company
+	 * WARNING : remove all computer linked to this company
+	 */
 	private void removeCompany()  {
 		System.out.println("Taper l'id de l'entreprise");
 		Long id;

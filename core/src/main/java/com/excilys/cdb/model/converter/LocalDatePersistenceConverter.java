@@ -5,6 +5,11 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter
+/**
+ * 
+ * a class for define the convert method to convert a sql date to a LocalDate
+ *
+ */
 public class LocalDatePersistenceConverter implements AttributeConverter<LocalDate, java.sql.Date> {
 
   @Override

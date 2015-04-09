@@ -73,6 +73,12 @@ public class AddComputer  {
 	    return "addComputer";
     }
     
+    /**
+     * refresh or load the values for the form
+     * @param pModel
+     * @param id
+     * @param result
+     */
     private void operation(ModelMap pModel, long id, String result) {    	
     	computerTarget = client.target("http://localhost:8580/cdbProject/rest/companyService/getCompanys");
 		List<CompanyDTO> companyList = computerTarget.request(MediaType.APPLICATION_JSON).get(new GenericType<List<CompanyDTO>>() {}); 
@@ -94,6 +100,7 @@ public class AddComputer  {
 		pModel.addAttribute("result", (result != null) ? result : "");
 
 		locale = LocaleContextHolder.getLocale();
+		System.out.println(locale.toLanguageTag());
 		pModel.addAttribute("langTag", locale.toLanguageTag());
     	
     }

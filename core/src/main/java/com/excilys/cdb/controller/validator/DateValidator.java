@@ -20,6 +20,12 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 	}
 
 	@Override
+	/**
+	 * check the validity of a date
+	 * @param the value you need to validate
+	 * @param the context
+	 * @return a boolean, true if the date is valid, false in other case.
+	 */
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		if (value == null) {
 			return false;
@@ -33,6 +39,10 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 		return false;
 	}
 
+	/**
+	 * get the regexe, depending of the locale context
+	 * @return a regex in a String.
+	 */
 	private String getDateRegex() {
 		Locale userLocale = LocaleContextHolder.getLocale();
 		return messageSource.getMessage("binding.date.regex", null, userLocale);

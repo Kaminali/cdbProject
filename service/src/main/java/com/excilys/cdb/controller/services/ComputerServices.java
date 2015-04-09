@@ -20,11 +20,6 @@ public class ComputerServices implements IComputerServices {
 	private IComputerDAO computerDAO;
 
 	@Override
-	public String testSpring() {
-		return String.valueOf(computerDAO.getNb());
-	}
-
-	@Override
 	public List<Computer> getAllComputer(long begin, long nb) {
 		List<Computer> computerList;
 		if (begin == -1 || nb == -1) {

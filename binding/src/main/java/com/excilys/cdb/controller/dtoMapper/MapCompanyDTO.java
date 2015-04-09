@@ -9,11 +9,9 @@ import java.util.stream.Collectors;
 import com.excilys.cdb.controller.dto.CompanyDTO;
 import com.excilys.cdb.model.bean.Company;
 
-/**
- * @author excilys
- *
- */
+
 public final class MapCompanyDTO {
+
 
 	public static List<Company> DtoToModel(List<CompanyDTO> companyDtoL) {
 		return companyDtoL.stream().map(b -> MapCompanyDTO.DtoToModel(b)).collect(Collectors.toList());

@@ -13,30 +13,35 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+
 
 <link rel="stylesheet" href="js/datePicker/jquery-ui.min.css">
 <script src="js/jquery.min.js"></script>
 <script src="js/datePicker/jquery-ui.js"></script>
-<!--  <link rel="stylesheet" href="/resources/demos/style.css">-->
 <script src="js/datePicker/datepicker-fr.js"></script>
 <script src="js/datePicker/datepicker-en.js"></script>
 
+<link href="css/main.css" rel="stylesheet" media="screen">
+
 <script>
 	$(function() { 
-		$( "#introduced" ).datepicker({changeMonth: true,
+		$( "#introducedFormated" ).datepicker({changeMonth: true,
 			changeYear: true});
-		$( "#introduced" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
-		$( "#introduced" ).datepicker( "setDate", "${computerEdit.introduced}" );
-		$( "#introduced" ).datepicker( "option", $.datepicker.regional["${langTag}"] );
+		$( "#introducedFormated" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+		$( "#introducedFormated" ).datepicker( "setDate", "${computerEdit.introduced}" );
+		$( "#introducedFormated" ).datepicker( "option", $.datepicker.regional["${langTag}"] );
+	    $( "#introducedFormated" ).datepicker('option', 'altField', "#introduced");
+	    $( "#introducedFormated" ).datepicker('option', 'altFormat', "yy-mm-dd");
 		
 	});
 	$(function() {
-		$( "#discontinued" ).datepicker({changeMonth: true,
+		$( "#discontinuedFormated" ).datepicker({changeMonth: true,
 			changeYear: true});
-		$( "#discontinued" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
-		$( "#discontinued" ).datepicker( "setDate", "${computerEdit.discontinued}" );
-		$( "#discontinued" ).datepicker( "option", $.datepicker.regional["${langTag}"] );
+		$( "#discontinuedFormated" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+		$( "#discontinuedFormated" ).datepicker( "setDate", "${computerEdit.discontinued}" );
+		$( "#discontinuedFormated" ).datepicker( "option", $.datepicker.regional["${langTag}"] );
+	    $( "#discontinuedFormated" ).datepicker('option', 'altField', "#discontinued");
+	    $( "#discontinuedFormated" ).datepicker('option', 'altFormat', "yy-mm-dd");
 	});
 </script>
 
@@ -78,8 +83,8 @@
 							</div>
 							<div class="form-group">
 								<label for="introduced"><spring:message code="messages.introduced" text="default text" /></label> <input
-									type="text" class="form-control" id="introduced"
-									name="introduced"  placeholder="yyyy-[m]m-[d]d"
+									type="text" class="form-control" id="introducedFormated"
+									name="introducedFormated"  placeholder="yyyy-[m]m-[d]d"
 									pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 									oninvalid="setCustomValidity('<spring:message code="messages.dateF" text="default text" /> yyyy-[m]m-[d]d')"
 									onchange="try{setCustomValidity('')}catch(e){}"
@@ -87,19 +92,20 @@
 									<c:if test="${not empty computerEdit}">
 										<c:out value="value=${computerEdit.introduced}" />
 									</c:if>
-    								/>
+    								/><input type="text" id="introduced" name="introduced" hidden="true" />
 							</div>
 							<div class="form-group">
 								<label for="discontinued"><spring:message code="messages.discontinued" text="default text" /></label> <input
-									type="date" class="form-control" id="discontinued"
-									name="discontinued" placeholder="yyyy-[m]m-[d]d"
+									type="date" class="form-control" id="discontinuedFormated"
+									name="discontinuedFormated" placeholder="yyyy-[m]m-[d]d"
 									pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 									oninvalid="setCustomValidity('<spring:message code="messages.dateF" text="default text" /> yyyy-[m]m-[d]d')"
 									onchange="try{setCustomValidity('')}catch(e){}"
 									readonly="readonly"
-									<c:if test="${not empty computerEdit}">
-										<c:out value="value=${computerEdit.discontinued}" />
-									</c:if>
+										<c:if test="${not empty computerEdit}">
+											<c:out value="value=${computerEdit.discontinued}" />
+										</c:if>
+									/><input type="text" id="discontinued" name="discontinued" hidden="true"
 									/>
 							</div>
 							<div class="form-group">

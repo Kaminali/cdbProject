@@ -17,7 +17,7 @@ public class ComputerDAO implements IComputerDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+	 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Computer> getList() {
